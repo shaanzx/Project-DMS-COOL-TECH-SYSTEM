@@ -1,4 +1,6 @@
 package lk.ijse.pos.bo.custom;
 
-public interface RegisterBO {
+import lk.ijse.pos.bo.SuperBO;
+
+public interface RegisterBO extends SuperBO {
 }

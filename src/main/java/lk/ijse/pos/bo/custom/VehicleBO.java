@@ -1,4 +1,6 @@
 package lk.ijse.pos.bo.custom;
 
-public interface VehicleBO {
+import lk.ijse.pos.bo.SuperBO;
+
+public interface VehicleBO extends SuperBO {
 }

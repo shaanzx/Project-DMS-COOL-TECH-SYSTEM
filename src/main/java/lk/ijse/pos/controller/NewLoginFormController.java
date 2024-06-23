@@ -2,14 +2,22 @@ package lk.ijse.pos.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import lk.ijse.pos.bo.BOFactory;
+import lk.ijse.pos.bo.custom.UserBO;
+import lk.ijse.pos.dao.custom.DashBoardDAO;
+
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class NewLoginFormController {
-
+    UserBO userBO = (UserBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.USER);
     @FXML
     private Pane ancLogin;
 
@@ -40,7 +48,25 @@ public class NewLoginFormController {
 
     @FXML
     void btnSignInAction(ActionEvent event) {
-
+        String userName = txtUserId.getText();
+        String password = txtPassword.getText();
+        try {
+            ResultSet resultSet = userBO.checkUserNamePassword(userName, password);
+            if(resultSet.next()){
+                String userId = resultSet.getString(1);
+                String userPassword = resultSet.getString(2);
+                if(userId.equals(userId) && userPassword.equals(password)){
+                    ancLogin.getScene().getWindow().hide();
+                    gotoDashBoard();
+                }else{
+                    new Alert(Alert.AlertType.ERROR,"Incorrect Password!");
+                }
+            }else{
+                new Alert(Alert.AlertType.ERROR,"Incorrect user ID.Check and try again.").show();
+            }
+        } catch (SQLException | IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
@@ -56,6 +82,17 @@ public class NewLoginFormController {
     @FXML
     void txtUserIdOnAction(ActionEvent event) {
 
+    }
+    public void gotoDashBoard() throws IOException {
+        AnchorPane rootNode = FXMLLoader.load(this.getClass().getResource("/view/global_new_form.fxml"));
+
+        Scene scene = new Scene(rootNode);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        //  stage.initStyle(StageStyle.UNDECORATED);
+        stage.setTitle("DashBoard Form");
+        stage.show();
     }
 
 }

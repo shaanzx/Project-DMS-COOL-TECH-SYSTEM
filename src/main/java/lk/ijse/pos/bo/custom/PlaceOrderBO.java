@@ -1,4 +1,6 @@
 package lk.ijse.pos.bo.custom;
 
-public interface PlaceOrderBO {
+import lk.ijse.pos.bo.SuperBO;
+
+public interface PlaceOrderBO extends SuperBO {
 }

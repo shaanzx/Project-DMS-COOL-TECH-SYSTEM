@@ -1,4 +1,6 @@
 package lk.ijse.pos.bo.custom;
 
-public interface DashBoardBO {
+import lk.ijse.pos.bo.SuperBO;
+
+public interface DashBoardBO extends SuperBO {
 }

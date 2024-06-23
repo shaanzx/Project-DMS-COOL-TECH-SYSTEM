@@ -1,3 +1,4 @@
+/*
 package lk.ijse.pos.entity;
 
 import javafx.scene.chart.PieChart;
@@ -30,3 +31,4 @@ public class DashBoard {
         return data;
     }
 }
+*/
