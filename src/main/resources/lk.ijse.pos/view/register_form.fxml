@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="registerPane" prefHeight="500.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.pos.controller.RegisterFormController">
+   <children>
+      <ImageView fitHeight="500.0" fitWidth="350.0" layoutX="-1.0" layoutY="-1.0" opacity="0.4">
+         <image>
+            <Image url="@../asset/User.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="108.0">
+         <image>
+            <Image url="@../asset/Autotech(2)-Photoroom.png-Photoroom.png" />
+         </image>
+      </ImageView>
+      <Text layoutX="30.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New user id">
+         <font>
+            <Font name="Cambria" size="14.0" />
+         </font></Text>
+      <TextField fx:id="txtUserId" layoutX="23.0" layoutY="220.0" prefHeight="30.0" prefWidth="250.0" promptText="Enter new id" styleClass="username-text" stylesheets="@../values/style.css" />
+      <Text layoutX="30.0" layoutY="285.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New user name">
+         <font>
+            <Font name="Cambria" size="14.0" />
+         </font></Text>
+      <TextField fx:id="txtUserName" layoutX="23.0" layoutY="295.0" prefHeight="30.0" prefWidth="250.0" promptText="Enter name" styleClass="username-text" stylesheets="@../values/style.css" />
+      <Text layoutX="30.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password">
+         <font>
+            <Font name="Cambria" size="14.0" />
+         </font></Text>
+      <JFXButton buttonType="RAISED" layoutX="235.0" layoutY="435.0" onAction="#btnConfirmOnAction" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #1B1464;" styleClass="signin-button" stylesheets="@../values/style.css" text="Confirm" textFill="WHITE">
+         <font>
+            <Font name="Cambria Bold" size="14.0" />
+         </font></JFXButton>
+      <PasswordField fx:id="txtPassword" layoutX="23.0" layoutY="370.0" prefHeight="30.0" prefWidth="250.0" promptText="Input password" styleClass="username-text" stylesheets="@../values/style.css" />
+      <Label fx:id="userNameValidate" layoutX="40.0" layoutY="325.0" prefHeight="17.0" prefWidth="316.0" textFill="#860e0e" />
+      <Label fx:id="passwordValidate" layoutX="40.0" layoutY="402.0" prefHeight="17.0" prefWidth="316.0" textFill="#860e0e" />
+   </children>
+</AnchorPane>

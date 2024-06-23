@@ -1,0 +1,64 @@
+.username-text {
+    -fx-background-radius: 30;
+}
+.signin-button:hover {
+    -fx-background-color: #53ecc8 !important;
+}
+.signup-button:hover {
+    -fx-background-color: #53ecc8 !important;
+}
+.dashboard-button:hover {
+    -fx-background-color: #53ecc8 !important;
+}
+.delete-button:hover {
+    -fx-background-color: #540a0a !important;
+}
+.update-button:hover {
+    -fx-background-color: #044d17 !important;
+}
+.save-button:hover {
+    -fx-background-color: #041144 !important;
+}
+.loginrectangle-button {
+    -fx-background-radius: 30;
+}
+.dashboard-button {
+    -fx-background-radius: 35;
+    -fx-font-size: 30;
+    -fx-font-weight: bold;
+    -fx-font-family: cambria;
+    -fx-text-fill: black;
+    -fx-alignment: center;
+    -fx-buttton-type: RAISED;
+    -fx-background-color: #1B1464;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER;
+    -fx-background-width: 50;
+}
+
+.count-rectangle{
+    -fx-background-radius: 35;
+}
+.image-corner{
+    -fx-background-radius: 35;
+}
+
+.dashboard-button:hover {
+    -fx-background-color: #53ecc8
+}
+
+.dashboard-button:pressed{
+    -fx-background-color: red;
+}
+
+.dashboard-button:focused{
+    -fx-background-color: red;
+}
+
+.dashboard-button:selected{
+    -fx-background-color: green;
+}
+
+.chart-bar{
+    -fx-bar-fill:green;
+}

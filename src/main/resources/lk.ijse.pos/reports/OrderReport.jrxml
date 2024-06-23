@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.2.final using JasperReports Library version 6.21.2-8434a0bd7c3bbc37cbf916f2968d35e4b165821a  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OrderReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4fb8972a-f638-45da-8860-44b8a0545557">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="OrderReport"/>
+	<queryString language="SQL">
+		<![CDATA[select item.iName,customer.name,iPrice,orderdetails.qty,(item.iPrice*orderdetails.qty) AS value,
+customerPayment,customerBalance
+FROM orderdetails
+         INNER JOIN orders
+                    ON orderdetails.oId=orders.oId
+         INNER JOIN item
+                    ON item.iCode=orderdetails.iCode
+         INNER JOIN payment
+                    ON payment.oId=orders.oId
+        INNER JOIN customer
+                    ON customer.cId=orders.cId
+WHERE orders.oId=(select max(orders.oId ) FROM orders)
+ORDER BY orderdetails.oId desc;]]>
+	</queryString>
+	<field name="iName" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="iName"/>
+		<property name="com.jaspersoft.studio.field.label" value="iName"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="item"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<field name="iPrice" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="iPrice"/>
+		<property name="com.jaspersoft.studio.field.label" value="iPrice"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="item"/>
+	</field>
+	<field name="qty" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="qty"/>
+		<property name="com.jaspersoft.studio.field.label" value="qty"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orderdetails"/>
+	</field>
+	<field name="value" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="value"/>
+		<property name="com.jaspersoft.studio.field.label" value="value"/>
+	</field>
+	<field name="customerPayment" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="customerPayment"/>
+		<property name="com.jaspersoft.studio.field.label" value="customerPayment"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="payment"/>
+	</field>
+	<field name="customerBalance" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="customerBalance"/>
+		<property name="com.jaspersoft.studio.field.label" value="customerBalance"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="payment"/>
+	</field>
+	<group name="iName">
+		<groupExpression><![CDATA[$F{iName}]]></groupExpression>
+	</group>
+	<group name="name">
+		<groupExpression><![CDATA[$F{name}]]></groupExpression>
+	</group>
+	<group name="iPrice">
+		<groupExpression><![CDATA[$F{iPrice}]]></groupExpression>
+	</group>
+	<group name="qty">
+		<groupExpression><![CDATA[$F{qty}]]></groupExpression>
+	</group>
+	<group name="value">
+		<groupExpression><![CDATA[$F{value}]]></groupExpression>
+	</group>
+	<group name="customerPayment">
+		<groupExpression><![CDATA[$F{customerPayment}]]></groupExpression>
+	</group>
+	<group name="customerBalance">
+		<groupExpression><![CDATA[$F{customerBalance}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

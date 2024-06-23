@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import java.lang.String?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="mainpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="668.0" prefWidth="1300.0" style="-fx-background-image: black;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.dmscooltech.controller.GlobalFormController">
+   <children>
+      <ImageView fitHeight="668.0" fitWidth="1300.0" rotate="180.0">
+         <image>
+            <Image url="@../asset/Dashboard_Background.jpg" />
+         </image>
+      </ImageView>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="668.0" stroke="#1d314f00" strokeType="INSIDE" width="300.0">
+         <fill>
+            <LinearGradient endX="0.49763033175355453" endY="1.0" startX="0.5023696682464455" startY="0.5497630331753556">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="1.0" green="1.0" blue="1.0" opacity="0.30000001192092896" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.250980406999588" green="0.7529411911964417" blue="0.843137264251709" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </fill></Rectangle>
+      <Pane prefHeight="668.0" prefWidth="300.0">
+         <children>
+            <JFXButton fx:id="btnEmployee" alignment="CENTER_RIGHT" buttonType="RAISED" contentDisplay="RIGHT" layoutX="60.0" layoutY="440.0" onAction="#btnEmployeeOnAction" prefHeight="30.0" prefWidth="180.0" style="-fx-background-color: #c7ecee; -fx-background-radius: 75; -fx-font-size: 20;" styleClass="dashboard-button" stylesheets="@../values/style.css" text="Employee ">
+               <font>
+                  <Font size="36.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0">
+                     <image>
+                        <Image url="@../asset/icon/EmployeeIcon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
+            <JFXButton fx:id="btnStoke" alignment="CENTER_RIGHT" buttonType="RAISED" contentDisplay="RIGHT" layoutX="60.0" layoutY="290.0" onAction="#btnStokeOnAction" prefHeight="30.0" prefWidth="180.0" style="-fx-background-color: #c7ecee; -fx-background-radius: 75; -fx-font-size: 20;" styleClass="dashboard-button" stylesheets="@../values/style.css" text="Stoke  ">
+               <font>
+                  <Font size="36.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0">
+                     <image>
+                        <Image url="@../asset/icon/ItemIcon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
+            <JFXButton fx:id="btnCustomer" alignment="CENTER_RIGHT" buttonType="RAISED" contentDisplay="RIGHT" layoutX="60.0" layoutY="340.0" onAction="#btnCustomerOnAction" prefHeight="30.0" prefWidth="180.0" style="-fx-background-color: #c7ecee; -fx-background-radius: 75; -fx-font-size: 20;" styleClass="dashboard-button" stylesheets="@../values/style.css" text="Customer  ">
+               <font>
+                  <Font size="36.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0">
+                     <image>
+                        <Image url="@../asset/icon/CustomerIcon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
+            <JFXButton fx:id="btnOrder" alignment="CENTER_RIGHT" buttonType="RAISED" contentDisplay="RIGHT" layoutX="60.0" layoutY="390.0" onAction="#btnOrderOnAction" prefHeight="30.0" prefWidth="180.0" style="-fx-background-color: #c7ecee; -fx-background-radius: 75; -fx-font-size: 20;" styleClass="dashboard-button" stylesheets="@../values/style.css" text="Order  ">
+               <font>
+                  <Font size="36.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0">
+                     <image>
+                        <Image url="@../asset/icon/OrderIcon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
+            <JFXButton fx:id="btnDashboard" alignment="CENTER_RIGHT" buttonType="RAISED" contentDisplay="RIGHT" layoutX="60.0" layoutY="240.0" onAction="#btnDashboardOnAction" prefHeight="30.0" prefWidth="180.0" style="-fx-background-color: #c7ecee; -fx-background-radius: 75; -fx-font-size: 20;" stylesheets="@../values/style.css" text="Dashboard">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0">
+                     <image>
+                        <Image url="@../asset/icon/DashBoard.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </graphic>
+               <styleClass>
+                  <String fx:value="dashboard-button" />
+                  <String fx:value="dashboard-button" />
+               </styleClass>
+            </JFXButton>
+            <JFXButton alignment="CENTER_RIGHT" buttonType="RAISED" contentDisplay="RIGHT" layoutX="90.0" layoutY="615.0" onAction="#btnLogoutOnAction" prefHeight="30.0" prefWidth="130.0" style="-fx-background-color: #c7ecee; -fx-background-radius: 75; -fx-font-size: 20;" styleClass="dashboard-button" stylesheets="@../values/style.css" text="Log Out">
+               <font>
+                  <Font size="36.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0">
+                     <image>
+                        <Image url="@../asset/icon/LogOutIcon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
+            <JFXButton fx:id="btnVehicle" alignment="CENTER_RIGHT" buttonType="RAISED" contentDisplay="RIGHT" layoutX="60.0" layoutY="490.0" onAction="#btnVehicleOnAction" prefHeight="30.0" prefWidth="180.0" style="-fx-background-color: #c7ecee; -fx-background-radius: 75; -fx-font-size: 20;" styleClass="dashboard-button" stylesheets="@../values/style.css" text="Vehicle">
+               <font>
+                  <Font size="36.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0">
+                     <image>
+                        <Image url="@../asset/icon/EmployeeIcon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
+            <JFXButton fx:id="btnRepair" alignment="CENTER_RIGHT" buttonType="RAISED" contentDisplay="RIGHT" layoutX="60.0" layoutY="540.0" onAction="#btnRepairOnAction" prefHeight="30.0" prefWidth="180.0" style="-fx-background-color: #c7ecee; -fx-background-radius: 75; -fx-font-size: 20;" styleClass="dashboard-button" stylesheets="@../values/style.css" text="Repair">
+               <font>
+                  <Font size="36.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0">
+                     <image>
+                        <Image url="@../asset/icon/EmployeeIcon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
+         </children>
+      </Pane>
+      <Pane fx:id="pagingPane" layoutX="300.0" prefHeight="668.0" prefWidth="966.0" />
+      <ImageView fx:id="imgDashboardUser" layoutX="10.0" layoutY="10.0" onMouseClicked="#imgUserOnAction">
+         <image>
+            <Image url="@../asset/icon/DashBoardUser.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="50.0" layoutY="30.0">
+         <image>
+            <Image url="@../asset/Autotech(2)-Photoroom.png-Photoroom.png" />
+         </image>
+      </ImageView>
+      <Line endX="300.0" startX="300.0" startY="668.0" strokeWidth="3.0" />
+   </children>
+</AnchorPane>

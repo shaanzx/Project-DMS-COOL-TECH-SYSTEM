@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane fx:id="orderViewPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #c7ecee; -fx-background-radius: 35;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.dmscooltech.controller.ViewRepairFormController">
+   <children>
+      <Pane layoutX="15.0" layoutY="15.0" prefHeight="568.0" prefWidth="766.0" style="-fx-background-color: white; -fx-background-radius: 35;" />
+      <Text layoutX="24.0" layoutY="60.0" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="2.0" text="Repair Deatils View" underline="true">
+         <font>
+            <Font name="Cambria" size="20.0" />
+         </font>
+      </Text>
+      <TableView fx:id="tblRepairDetailsTable" layoutX="25.0" layoutY="106.0" prefHeight="462.0" prefWidth="742.0">
+        <columns>
+          <TableColumn fx:id="colRepairId" minWidth="0.0" prefWidth="94.00000762939453" text="Repair Id" />
+          <TableColumn fx:id="colVehicleNo" prefWidth="95.66667175292969" text="Vehicle No" />
+            <TableColumn fx:id="colRepairDate" prefWidth="112.66665649414062" text="Date" />
+            <TableColumn fx:id="colItemCode" prefWidth="72.66665649414062" text="Item Code" />
+            <TableColumn fx:id="colItemQty" prefWidth="66.66665649414062" text="Qty" />
+            <TableColumn fx:id="colItemUnitPrice" prefWidth="60.6666259765625" text="Unit Price" />
+            <TableColumn fx:id="colRepairCost" prefWidth="124.6666259765625" text="Repair Cost" />
+            <TableColumn fx:id="colTotalAmount" prefWidth="111.3333740234375" text="Total Amount" />
+        </columns>
+      </TableView>
+      <TextField fx:id="txtRepairId" layoutX="530.0" layoutY="40.0" promptText="Enter Repair Id" />
+      <JFXButton buttonType="RAISED" layoutX="690.0" layoutY="40.0" onAction="#btnSearchOnAction" style="-fx-background-color: #11585e;" text="Search" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></JFXButton>
+      <Line endX="720.0" layoutX="19.0" layoutY="90.0" stroke="#7ed6df" strokeWidth="10.0" />
+   </children>
+</Pane>
