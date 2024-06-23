@@ -9,6 +9,4 @@ import java.sql.SQLException;
 
 public interface CustomerDAO extends CrudDAO<Customer> {
     Customer searchByMobile(String tel) throws SQLException;
-    String nextId(String currentId);
-
 }

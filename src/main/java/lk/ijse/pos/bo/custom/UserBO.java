@@ -14,11 +14,11 @@ import java.util.List;
 public interface UserBO extends SuperBO {
     ResultSet checkUserNamePassword(String userName,String Pw) throws SQLException, IOException, ClassNotFoundException;
 
-    String generateUserId() throws SQLException, ClassNotFoundException;
+    ResultSet generateUserId() throws SQLException, ClassNotFoundException;
 
     List<User> getAllUser() throws SQLException;
 
-    boolean saveUser(UserDTO dto) throws SQLException;
+    boolean saveUser(UserDTO dto) throws SQLException, ClassNotFoundException;
 
     boolean updateUser(UserDTO dto) throws SQLException;
 

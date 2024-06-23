@@ -1,10 +1,8 @@
 package lk.ijse.pos.bo.custom.impl;
 
-import javafx.scene.layout.Pane;
 import lk.ijse.pos.bo.custom.UserBO;
 import lk.ijse.pos.dao.DAOFactory;
 import lk.ijse.pos.dao.custom.UserDAO;
-import lk.ijse.pos.dao.custom.impl.UserDAOImpl;
 import lk.ijse.pos.dto.UserDTO;
 import lk.ijse.pos.entity.User;
 
@@ -15,14 +13,15 @@ import java.util.List;
 
 public class UserBOImpl implements UserBO {
     UserDAO userDAO = (UserDAO) DAOFactory.getDaoFactory().getDaoType(DAOFactory.DAOType.USER);
+
     @Override
     public ResultSet checkUserNamePassword(String userName, String pw) throws SQLException, IOException, ClassNotFoundException {
         return userDAO.checkUserNamePassword(userName,pw);
     }
 
     @Override
-    public String generateUserId() throws SQLException, ClassNotFoundException {
-        return "";
+    public ResultSet generateUserId() throws SQLException, ClassNotFoundException {
+        return userDAO.generateId();
     }
 
     @Override
@@ -31,8 +30,8 @@ public class UserBOImpl implements UserBO {
     }
 
     @Override
-    public boolean saveUser(UserDTO dto) throws SQLException {
-        return false;
+    public boolean saveUser(UserDTO dto) throws SQLException, ClassNotFoundException {
+        return userDAO.save(new User(dto.getId(),dto.getName(),dto.getPassword()));
     }
 
     @Override

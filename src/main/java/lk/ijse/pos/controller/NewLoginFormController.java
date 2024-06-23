@@ -3,6 +3,7 @@ package lk.ijse.pos.controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -55,7 +56,7 @@ public class NewLoginFormController {
             if(resultSet.next()){
                 String userId = resultSet.getString(1);
                 String userPassword = resultSet.getString(2);
-                if(userId.equals(userId) && userPassword.equals(password)){
+                if(userId.equals(userName) && userPassword.equals(password)){
                     ancLogin.getScene().getWindow().hide();
                     gotoDashBoard();
                 }else{
@@ -65,24 +66,32 @@ public class NewLoginFormController {
                 new Alert(Alert.AlertType.ERROR,"Incorrect user ID.Check and try again.").show();
             }
         } catch (SQLException | IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            new Alert(Alert.AlertType.ERROR, "User Id Or password doesn't match.Try aging!").show();
         }
     }
 
     @FXML
-    void btnSignUpOnAction(ActionEvent event) {
+    void btnSignUpOnAction(ActionEvent event) throws IOException {
+        Parent rootNode = FXMLLoader.load(this.getClass().getResource("/view/register_form.fxml"));
 
+        Scene scene = new Scene(rootNode);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.setTitle("Register Form");
+        stage.show();
     }
 
     @FXML
     void txtPasswordOnAction(ActionEvent event) {
-
+        btnSignInAction(event);
     }
 
     @FXML
     void txtUserIdOnAction(ActionEvent event) {
-
+        txtPassword.requestFocus();
     }
+
     public void gotoDashBoard() throws IOException {
         AnchorPane rootNode = FXMLLoader.load(this.getClass().getResource("/view/global_new_form.fxml"));
 

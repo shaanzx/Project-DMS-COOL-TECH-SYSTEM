@@ -1,7 +1,5 @@
 package lk.ijse.pos.dao.custom.impl;
 
-import javafx.scene.layout.Pane;
-import lk.ijse.pos.controller.RegisterFormController;
 import lk.ijse.pos.dao.SQLUtil;
 import lk.ijse.pos.dao.custom.UserDAO;
 import lk.ijse.pos.entity.User;
@@ -20,15 +18,16 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public String generateId() throws SQLException, ClassNotFoundException {
+    public ResultSet generateId() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT uId FROM user ORDER BY uId DESC LIMIT 1");
-        String currentUserId = null;
+        return resultSet;
+       /* String currentUserId = null;
         if(resultSet.next()){
             currentUserId = resultSet.getString(1);
             //return RegisterFormController.splitUserId(currentUserId);
         }
         //return RegisterFormController.splitUserId(null);
-        return null;
+        return null;*/
     }
 
     @Override
@@ -37,8 +36,8 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public boolean save(User entity) throws SQLException {
-        return false;
+    public boolean save(User entity) throws SQLException, ClassNotFoundException {
+        return SQLUtil.execute("INSERT INTO user VALUES(?, ?, ?)");
     }
 
     @Override
