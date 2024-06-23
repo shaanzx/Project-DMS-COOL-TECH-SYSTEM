@@ -6,6 +6,7 @@ import lk.ijse.pos.entity.Customer;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerDAOImpl  implements CustomerDAO {
@@ -17,8 +18,20 @@ public class CustomerDAOImpl  implements CustomerDAO {
     }
 
     @Override
-    public List<Customer> getAll() throws SQLException {
-        return List.of();
+    public List<Customer> getAll() throws SQLException, ClassNotFoundException {
+        ArrayList<Customer> customerList = new ArrayList<>();
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM customer");
+        while (resultSet.next()) {
+              customerList.add(new Customer(
+                    resultSet.getString(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getString(4),
+                    resultSet.getString(5),
+                    resultSet.getString(6)
+              ));
+        }
+        return customerList;
     }
 
     @Override

@@ -72,7 +72,7 @@ public class NewLoginFormController {
 
     @FXML
     void btnSignUpOnAction(ActionEvent event) throws IOException {
-        Parent rootNode = FXMLLoader.load(this.getClass().getResource("/view/register_form.fxml"));
+        Parent rootNode = FXMLLoader.load(this.getClass().getResource("/lk.ijse.pos/view/register_form.fxml"));
 
         Scene scene = new Scene(rootNode);
         Stage stage = new Stage();

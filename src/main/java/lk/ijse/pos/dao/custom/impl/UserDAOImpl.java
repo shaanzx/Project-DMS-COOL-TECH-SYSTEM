@@ -21,13 +21,6 @@ public class UserDAOImpl implements UserDAO {
     public ResultSet generateId() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = SQLUtil.execute("SELECT uId FROM user ORDER BY uId DESC LIMIT 1");
         return resultSet;
-       /* String currentUserId = null;
-        if(resultSet.next()){
-            currentUserId = resultSet.getString(1);
-            //return RegisterFormController.splitUserId(currentUserId);
-        }
-        //return RegisterFormController.splitUserId(null);
-        return null;*/
     }
 
     @Override
@@ -37,7 +30,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean save(User entity) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("INSERT INTO user VALUES(?, ?, ?)");
+        return SQLUtil.execute("INSERT INTO user VALUES(?, ?, ?)",entity.getId(),entity.getName(),entity.getPassword());
     }
 
     @Override

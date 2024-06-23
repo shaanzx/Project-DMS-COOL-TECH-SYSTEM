@@ -5,6 +5,7 @@ import lk.ijse.pos.bo.custom.impl.RegisterBOImpl;
 import lk.ijse.pos.bo.custom.impl.RepairBOImpl;
 import lk.ijse.pos.bo.custom.impl.UserBOImpl;
 import lk.ijse.pos.dao.custom.CustomerDAO;
+import lk.ijse.pos.dao.custom.UserDAO;
 import lk.ijse.pos.dao.custom.impl.*;
 
 public class DAOFactory {
@@ -20,11 +21,11 @@ public class DAOFactory {
         return (daoFactory==null)?daoFactory=new DAOFactory():daoFactory;
     }
 
-    public SuperBO getDaoType(DAOType daoType){
+    public SuperDAO getDaoType(DAOType daoType){
         switch(daoType){
-           /* case CUSTOMER:
+           case CUSTOMER:
                 return new CustomerDAOImpl();
-            case DASHBOARD:
+            /*case DASHBOARD:
                 return new DashBoardDAOImpl();
             case ITEM:
                 return new ItemDAOImpl();
@@ -37,7 +38,7 @@ public class DAOFactory {
             case REPAIR:
                 return new RepairBOImpl();*/
             case USER:
-                return new UserBOImpl();
+                return new UserDAOImpl();
             default:
                 return null;
         }

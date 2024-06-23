@@ -40,7 +40,7 @@ public class RegisterFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        generateUserId();
+        txtUserId.setText(generateUserId());
     }
 
     @FXML
@@ -63,16 +63,15 @@ public class RegisterFormController implements Initializable {
         }
     }
 
-    public void generateUserId(){
+    public String generateUserId(){
         try {
             ResultSet resultSet = userBO.generateUserId();
             String currentUserId = null;
             if(resultSet.next()){
                 currentUserId = resultSet.getString(1);
-                splitUserId(currentUserId);
-                return;
+                return splitUserId(currentUserId);
             }
-            splitUserId(null);
+            return splitUserId(null);
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }

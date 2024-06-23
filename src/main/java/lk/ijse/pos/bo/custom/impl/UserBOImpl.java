@@ -2,6 +2,7 @@ package lk.ijse.pos.bo.custom.impl;
 
 import lk.ijse.pos.bo.custom.UserBO;
 import lk.ijse.pos.dao.DAOFactory;
+import lk.ijse.pos.dao.custom.CustomerDAO;
 import lk.ijse.pos.dao.custom.UserDAO;
 import lk.ijse.pos.dto.UserDTO;
 import lk.ijse.pos.entity.User;

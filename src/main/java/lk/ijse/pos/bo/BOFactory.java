@@ -18,9 +18,9 @@ public class BOFactory {
 
     public SuperBO getBOType(BOType type){
         switch (type){
-            /*case CUSTOMER:
+            case CUSTOMER:
                 return new CustomerBOImpl();
-            case DASHBOARD:
+            /*case DASHBOARD:
                 return new DashBoardBOImpl();
             case ITEM:
                 return new ItemBOImpl();
