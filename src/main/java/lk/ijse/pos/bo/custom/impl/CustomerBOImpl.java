@@ -24,7 +24,7 @@ public class CustomerBOImpl implements CustomerBO {
     }
 
     @Override
-    public boolean saveCustomer(Customer entity) throws SQLException, ClassNotFoundException {
+    public boolean saveCustomer(Customer dto) throws SQLException, ClassNotFoundException {
         return false;
     }
 

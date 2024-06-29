@@ -9,5 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public interface UserDAO extends CrudDAO <User> {
+
     ResultSet checkUserNamePassword(String userName, String pw) throws SQLException, IOException, ClassNotFoundException;
     }

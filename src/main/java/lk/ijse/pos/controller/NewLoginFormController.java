@@ -12,12 +12,15 @@ import javafx.stage.Stage;
 import lk.ijse.pos.bo.BOFactory;
 import lk.ijse.pos.bo.custom.UserBO;
 import lk.ijse.pos.dao.custom.DashBoardDAO;
+import lk.ijse.pos.util.Navigation;
 
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class NewLoginFormController {
+    public AnchorPane mainpane;
+
     UserBO userBO = (UserBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.USER);
     @FXML
     private Pane ancLogin;
@@ -51,22 +54,23 @@ public class NewLoginFormController {
     void btnSignInAction(ActionEvent event) {
         String userName = txtUserId.getText();
         String password = txtPassword.getText();
+
         try {
-            ResultSet resultSet = userBO.checkUserNamePassword(userName, password);
-            if(resultSet.next()){
-                String userId = resultSet.getString(1);
-                String userPassword = resultSet.getString(2);
-                if(userId.equals(userName) && userPassword.equals(password)){
+            ResultSet resultSet = userBO.checkUserNamePassword(userName,password);
+            while(resultSet.next()){
+                String uId = resultSet.getString(1);
+                String uName = resultSet.getString(2);
+                String uPassword = resultSet.getString(3);
+
+                if (password.equals(uPassword)) {
                     ancLogin.getScene().getWindow().hide();
                     gotoDashBoard();
                 }else{
                     new Alert(Alert.AlertType.ERROR,"Incorrect Password!");
                 }
-            }else{
-                new Alert(Alert.AlertType.ERROR,"Incorrect user ID.Check and try again.").show();
             }
-        } catch (SQLException | IOException | ClassNotFoundException e) {
-            new Alert(Alert.AlertType.ERROR, "User Id Or password doesn't match.Try aging!").show();
+        } catch (IOException | SQLException | ClassNotFoundException e ) {
+            new Alert(Alert.AlertType.ERROR, "User id or password doesn't match.Try aging!").show();
         }
     }
 
@@ -93,15 +97,12 @@ public class NewLoginFormController {
     }
 
     public void gotoDashBoard() throws IOException {
-        AnchorPane rootNode = FXMLLoader.load(this.getClass().getResource("/view/global_new_form.fxml"));
-
+        Parent rootNode = FXMLLoader.load(this.getClass().getResource("/lk.ijse.pos/view/global_new_form.fxml"));
         Scene scene = new Scene(rootNode);
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.centerOnScreen();
-        //  stage.initStyle(StageStyle.UNDECORATED);
-        stage.setTitle("DashBoard Form");
+        stage.setTitle("Dashboard Form");
         stage.show();
     }
-
 }

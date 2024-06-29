@@ -9,18 +9,30 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class UserDAOImpl implements UserDAO {
+public class  UserDAOImpl implements UserDAO {
 
     @Override
-    public ResultSet checkUserNamePassword(String userName,String pw) throws SQLException, IOException, ClassNotFoundException {
-        ResultSet resultSet = SQLUtil.execute("SELECT uName, uPassword FROM user WHERE uName = ?");
-        return resultSet;
-    }
+    public ResultSet checkUserNamePassword(String userName, String pw) throws SQLException, ClassNotFoundException {
+
+    return SQLUtil.execute("SELECT uId, uName, uPassword FROM user WHERE uName = ?", userName);
+
+}
+   /* public boolean checkUserNamePassword(String userName, String pw) throws SQLException, ClassNotFoundException {
+        ResultSet resultSet =SQLUtil.execute("SELECT  uId ,uName, uPassword FROM user WHERE uName = ?",userName,pw);
+        if(resultSet.next()){
+             if (pw.equals(resultSet.getString(3))) {
+                 System.out.println(resultSet.getString(1));
+                 return true;
+            }
+        }
+        return false;
+    }*/
+
+
 
     @Override
     public ResultSet generateId() throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = SQLUtil.execute("SELECT uId FROM user ORDER BY uId DESC LIMIT 1");
-        return resultSet;
+        return SQLUtil.execute("SELECT uId FROM user ORDER BY uId DESC LIMIT 1");
     }
 
     @Override

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="668.0" prefWidth="1300.0" style="-fx-background-color: #c7ecee; -fx-background-radius: 35;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.dmscooltech.controller.GlobalFormController">
+<AnchorPane fx:id="mainpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="668.0" prefWidth="1300.0" style="-fx-background-color: #c7ecee; -fx-background-radius: 35;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.pos.controller.GlobalFormController">
    <children>
       <Pane layoutX="40.0" layoutY="20.0" prefHeight="628.0" prefWidth="1220.0" style="-fx-background-color: white; -fx-background-radius: 35;" />
       <Pane layoutX="50.0" layoutY="40.0" prefHeight="598.0" prefWidth="213.0" style="-fx-background-color: #7ed6df; -fx-background-radius: 35;">
