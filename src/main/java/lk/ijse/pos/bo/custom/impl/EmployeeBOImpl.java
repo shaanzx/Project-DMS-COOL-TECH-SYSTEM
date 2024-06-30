@@ -4,6 +4,7 @@ import lk.ijse.pos.bo.custom.EmployeeBO;
 import lk.ijse.pos.dao.DAOFactory;
 import lk.ijse.pos.dao.custom.EmployeeDAO;
 import lk.ijse.pos.dto.EmployeeDTO;
+import lk.ijse.pos.entity.Employee;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,32 +14,45 @@ public class EmployeeBOImpl implements EmployeeBO {
     EmployeeDAO employeeDAO = (EmployeeDAO) DAOFactory.getDaoFactory().getDaoType(DAOFactory.DAOType.EMPLOYEE);
 
     @Override
-    public ResultSet generateId() throws SQLException, ClassNotFoundException {
+    public ResultSet generateEmployeeId() throws SQLException, ClassNotFoundException {
         return employeeDAO.generateId();
     }
 
     @Override
-    public ArrayList<EmployeeDTO> getAll() throws SQLException, ClassNotFoundException {
-        return null;
+    public ArrayList<EmployeeDTO> getAllEmployee() throws SQLException, ClassNotFoundException {
+        ArrayList<EmployeeDTO> employees = new ArrayList<>();
+        ArrayList<Employee> employeeArrayList = employeeDAO.getAll();
+        for (Employee employee : employeeArrayList) {
+            EmployeeDTO employeeDTO = new EmployeeDTO(
+                    employee.getId(),
+                    employee.getName(),
+                    employee.getAddress(),
+                    employee.getTel(),
+                    employee.getJobRole(),
+                    employee.getUserId()
+            );
+            employees.add(employeeDTO);
+        }
+        return employees;
     }
 
     @Override
-    public boolean save(EmployeeDTO dto) throws SQLException, ClassNotFoundException {
+    public boolean saveEmployee(EmployeeDTO dto) throws SQLException, ClassNotFoundException {
         return false;
     }
 
     @Override
-    public boolean update(EmployeeDTO dto) throws SQLException, ClassNotFoundException {
+    public boolean updateEmployee(EmployeeDTO dto) throws SQLException, ClassNotFoundException {
         return false;
     }
 
     @Override
-    public boolean delete(String id) throws SQLException, ClassNotFoundException {
+    public boolean deleteEmployee(String id) throws SQLException, ClassNotFoundException {
         return false;
     }
 
     @Override
-    public EmployeeDTO search(String id) throws SQLException, ClassNotFoundException {
+    public EmployeeDTO searchEmployee(String id) throws SQLException, ClassNotFoundException {
         return null;
     }
 }

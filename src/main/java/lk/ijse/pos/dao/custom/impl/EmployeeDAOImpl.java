@@ -16,7 +16,19 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public ArrayList<Employee> getAll() throws SQLException, ClassNotFoundException {
-        return null;
+        ArrayList<Employee> employeeList = new ArrayList<>();
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM employee");
+        while (resultSet.next()) {
+            employeeList.add(new Employee(
+                    resultSet.getString(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getString(4),
+                    resultSet.getString(5),
+                    resultSet.getString(6)
+            ));
+        }
+        return employeeList;
     }
 
     @Override

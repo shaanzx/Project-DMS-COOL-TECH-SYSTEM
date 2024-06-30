@@ -10,15 +10,15 @@ import java.util.ArrayList;
 
 public interface EmployeeBO extends SuperBO {
 
-    ResultSet generateId() throws SQLException, ClassNotFoundException;
+    ResultSet generateEmployeeId() throws SQLException, ClassNotFoundException;
 
-    ArrayList<EmployeeDTO> getAll() throws SQLException, ClassNotFoundException;
+    ArrayList<EmployeeDTO> getAllEmployee() throws SQLException, ClassNotFoundException;
 
-    boolean save(EmployeeDTO dto) throws SQLException, ClassNotFoundException;
+    boolean saveEmployee(EmployeeDTO dto) throws SQLException, ClassNotFoundException;
 
-    boolean update(EmployeeDTO dto) throws SQLException, ClassNotFoundException;
+    boolean updateEmployee(EmployeeDTO dto) throws SQLException, ClassNotFoundException;
 
-    boolean delete(String id) throws SQLException, ClassNotFoundException;
+    boolean deleteEmployee(String id) throws SQLException, ClassNotFoundException;
 
-    EmployeeDTO search(String id) throws SQLException, ClassNotFoundException;
+    EmployeeDTO searchEmployee(String id) throws SQLException, ClassNotFoundException;
 }

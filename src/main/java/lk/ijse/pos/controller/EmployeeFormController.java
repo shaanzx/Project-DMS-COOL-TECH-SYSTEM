@@ -13,11 +13,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import lk.ijse.pos.bo.BOFactory;
 import lk.ijse.pos.bo.custom.EmployeeBO;
+import lk.ijse.pos.dto.EmployeeDTO;
+import lk.ijse.pos.tm.EmployeeTm;
 
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class EmployeeFormController  implements Initializable {
@@ -58,7 +61,7 @@ public class EmployeeFormController  implements Initializable {
     private Pane pagingPane;
 
     @FXML
-    private TableView<?> tblEmployee;
+    private TableView<EmployeeTm> tblEmployee;
 
     @FXML
     private Label txtDate;
@@ -95,7 +98,7 @@ public class EmployeeFormController  implements Initializable {
 
     private String generateNextEmployeeId() {
         try {
-            ResultSet resultSet = employeeBO.generateId();
+            ResultSet resultSet = employeeBO.generateEmployeeId();
             String currenEmpId = null;
             if(resultSet.next()) {
                 currenEmpId = resultSet.getString(1);
@@ -128,7 +131,20 @@ public class EmployeeFormController  implements Initializable {
     }
 
     private void loadAllEmployee() {
-
+        tblEmployee.getItems().clear();
+        try {
+            ArrayList<EmployeeDTO> allEmployee = employeeBO.getAllEmployee();
+            for (EmployeeDTO employeeDTO : allEmployee) {
+                tblEmployee.getItems().add(new EmployeeTm(
+                        employeeDTO.getId(),
+                        employeeDTO.getName(),
+                        employeeDTO.getAddress(),
+                        employeeDTO.getTel(),
+                        employeeDTO.getJobRole()));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void setCellValueFactory() {
