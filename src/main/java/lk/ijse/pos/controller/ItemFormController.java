@@ -1,8 +1,10 @@
 package lk.ijse.pos.controller;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
@@ -216,16 +218,37 @@ public class ItemFormController implements Initializable {
         }
     }
 
-
-
     @FXML
     void tblItemClickOnAction(MouseEvent event) {
+        TablePosition pos = tblItem.getSelectionModel().getSelectedCells().get(0);
+        int row = pos.getRow();
+        ObservableList<TableColumn<ItemTm,?>> columns = tblItem.getColumns();
 
+        txtItemCode.setText(columns.get(0).getCellData(row).toString());
+        txtItemName.setText(columns.get(1).getCellData(row).toString());
+        txtVehicleModel.setText(columns.get(2).getCellData(row).toString());
+        txtQytOnHand.setText(columns.get(3).getCellData(row).toString());
+        txtUnitPrice.setText(columns.get(4).getCellData(row).toString());
+        dpDate.setValue(LocalDate.parse(columns.get(5).getCellData(row).toString()));
+
+        tblItem.setCursor(Cursor.HAND);
     }
 
     @FXML
     void txtSearchItemOnAction(ActionEvent event) {
-
+        try {
+            ItemDTO itemDTO = itemBO.searchItem(itemCode);
+            if (itemDTO != null) {
+                txtItemCode.setText(itemDTO.getCode());
+                txtItemName.setText(itemDTO.getDescription());
+                txtVehicleModel.setText(itemDTO.getModel());
+                txtQytOnHand.setText(String.valueOf(itemDTO.getQtyOnHand()));
+                txtUnitPrice.setText(String.valueOf(itemDTO.getUnitPrice()));
+                dpDate.setValue(LocalDate.parse(itemDTO.getDate()));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
