@@ -1,26 +1,24 @@
 package lk.ijse.pos.bo.custom;
 
 import lk.ijse.pos.bo.SuperBO;
-import lk.ijse.pos.dao.SQLUtil;
+import lk.ijse.pos.dto.CustomerDTO;
 import lk.ijse.pos.entity.Customer;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 public interface CustomerBO extends SuperBO {
     ResultSet generateCustomerId() throws SQLException, ClassNotFoundException;
 
-    List<Customer> getAllCustomer() throws SQLException, ClassNotFoundException;
+    ArrayList<CustomerDTO> getAllCustomer() throws SQLException, ClassNotFoundException;
 
-    boolean saveCustomer(Customer dto) throws SQLException, ClassNotFoundException;
+    boolean saveCustomer(CustomerDTO dto) throws SQLException, ClassNotFoundException;
 
-    boolean updateCustomer(Customer dto) throws SQLException;
+    boolean updateCustomer(CustomerDTO dto) throws SQLException, ClassNotFoundException;
 
-     boolean deleteCustomer(String id) throws SQLException;
+     boolean deleteCustomer(String id) throws SQLException, ClassNotFoundException;
 
-    Customer searchCustomer(String id) throws SQLException;
+    CustomerDTO searchCustomer(String id) throws SQLException, ClassNotFoundException;
 
-    Customer searchByMobileCustomer(String tel) throws SQLException;
 }

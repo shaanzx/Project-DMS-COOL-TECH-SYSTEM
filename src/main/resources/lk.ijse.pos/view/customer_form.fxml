@@ -100,7 +100,7 @@
          <graphic>
             <ImageView fitHeight="20.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../database-programming/_06-supermarket-mvc/src/main/resources/asserts/icon/delete.png" />
+                  <Image url="@../asserts/icon/delete.png" />
                </image>
             </ImageView>
          </graphic>

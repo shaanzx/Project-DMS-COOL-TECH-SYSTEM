@@ -133,13 +133,13 @@ public class GlobalFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        /*pagingPane.setVisible(true);
+        pagingPane.setVisible(true);
         try {
-            Navigation.switchPaging(pagingPane, "dashboard_form.fxml");
+            Navigation.switchPaging(pagingPane, "customer_form.fxml");
             btnDashboard.setStyle("-fx-background-color:  white; -fx-background-radius: 75; -fx-font-size: 20;");
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     public void imgUserOnAction(MouseEvent mouseEvent) {

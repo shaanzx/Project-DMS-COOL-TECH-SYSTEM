@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import lk.ijse.pos.bo.BOFactory;
 import lk.ijse.pos.bo.custom.UserBO;
 import lk.ijse.pos.dao.custom.DashBoardDAO;
+import lk.ijse.pos.dto.UserDTO;
 import lk.ijse.pos.util.Navigation;
 
 import java.io.IOException;
@@ -40,6 +41,10 @@ public class NewLoginFormController {
     @FXML
     private Label userIdValidate;
 
+    String uId;
+    String uName;
+    String uPassword;
+
     @FXML
     void btnForgetOnAction(ActionEvent event) {
 
@@ -58,9 +63,9 @@ public class NewLoginFormController {
         try {
             ResultSet resultSet = userBO.checkUserNamePassword(userName,password);
             while(resultSet.next()){
-                String uId = resultSet.getString(1);
-                String uName = resultSet.getString(2);
-                String uPassword = resultSet.getString(3);
+                uId = resultSet.getString(1);
+                uName = resultSet.getString(2);
+                uPassword = resultSet.getString(3);
 
                 if (password.equals(uPassword)) {
                     ancLogin.getScene().getWindow().hide();

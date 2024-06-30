@@ -7,6 +7,7 @@ import lk.ijse.pos.entity.User;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class  UserDAOImpl implements UserDAO {
@@ -36,8 +37,8 @@ public class  UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public List<User> getAll() throws SQLException {
-        return List.of();
+    public ArrayList<User> getAll() throws SQLException {
+        return new ArrayList<>();
     }
 
     @Override
