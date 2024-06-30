@@ -19,20 +19,10 @@ public class BOFactory {
         switch (type){
             case CUSTOMER:
                 return new CustomerBOImpl();
-            /*case DASHBOARD:
-                return new DashBoardBOImpl();
             case ITEM:
                 return new ItemBOImpl();
-            case PLACE_ORDER:
-                return new PlaceOrderBOImpl();
-            case REGISTER:
-                return new RegisterBOImpl();
-            case REPAIR:
-                return new RepairBOImpl();*/
             case USER:
                 return new UserBOImpl();
-          /*  case VEHICLE:
-                return new VehicleBOImpl();*/
             default:
                 return null;
         }

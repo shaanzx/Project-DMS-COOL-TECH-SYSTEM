@@ -25,10 +25,10 @@ public class DAOFactory {
         switch(daoType){
            case CUSTOMER:
                 return new CustomerDAOImpl();
-            /*case DASHBOARD:
-                return new DashBoardDAOImpl();
             case ITEM:
                 return new ItemDAOImpl();
+            /*case DASHBOARD:
+                return new DashBoardDAOImpl();
             case ORDER:
                 return new OrderDAOImpl();
             case ORDER_DETAILS:
