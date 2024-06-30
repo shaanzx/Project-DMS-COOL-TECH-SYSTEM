@@ -63,7 +63,7 @@ public class ItemDAOImpl  implements ItemDAO {
 
     @Override
     public boolean delete(String id) throws SQLException, ClassNotFoundException {
-        return false;
+        return SQLUtil.execute("DELETE FROM item WHERE iCode = ?",id);
     }
 
     @Override

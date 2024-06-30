@@ -163,12 +163,38 @@ public class ItemFormController implements Initializable {
         lblDateItem.setText(String.valueOf(now));
     }
 
+    private void clearTextFields(){
+        txtItemCode.clear();
+        txtItemName.clear();
+        txtQytOnHand.clear();
+        txtUnitPrice.clear();
+        txtVehicleModel.clear();
+    }
+
     @FXML
     void btnItemSaveOnAction(ActionEvent event) {
         try {
             boolean isSaved = itemBO.saveItem(new ItemDTO(itemCode, description, vehicleModel, qytOnHand, unitPrice, date));
             if(isSaved){
-                new Alert(Alert.AlertType.INFORMATION, "Item Saved").show();
+                new Alert(Alert.AlertType.CONFIRMATION, "Item Saved").show();
+                loadAllItem();
+                clearTextFields();
+                generateNextItemCode();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    void btnItemUpdateOnAction(ActionEvent event) {
+        try {
+            boolean isUpdated = itemBO.updateItem(new ItemDTO(itemCode, description, vehicleModel, qytOnHand, unitPrice, date));
+            if(isUpdated){
+                new Alert(Alert.AlertType.CONFIRMATION, "Item Updated").show();
+                loadAllItem();
+                clearTextFields();
+                generateNextItemCode();
             }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -177,13 +203,20 @@ public class ItemFormController implements Initializable {
 
     @FXML
     void btnItemDeleteOnAction(ActionEvent event) {
-
+        try {
+            boolean isDeleted = itemBO.deleteItem(itemCode);
+            if(isDeleted){
+                new Alert(Alert.AlertType.CONFIRMATION, "Item Deleted").show();
+                loadAllItem();
+                generateNextItemCode();
+                clearTextFields();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    @FXML
-    void btnItemUpdateOnAction(ActionEvent event) {
 
-    }
 
     @FXML
     void tblItemClickOnAction(MouseEvent event) {
