@@ -38,21 +38,43 @@ public class EmployeeBOImpl implements EmployeeBO {
 
     @Override
     public boolean saveEmployee(EmployeeDTO dto) throws SQLException, ClassNotFoundException {
-        return false;
+        return employeeDAO.save(new Employee(
+                dto.getId(),
+                dto.getName(),
+                dto.getAddress(),
+                dto.getTel(),
+                dto.getJobRole(),
+                dto.getUserId()
+        ));
     }
 
     @Override
     public boolean updateEmployee(EmployeeDTO dto) throws SQLException, ClassNotFoundException {
-        return false;
+        return employeeDAO.update(new Employee(
+                dto.getId(),
+                dto.getName(),
+                dto.getAddress(),
+                dto.getTel(),
+                dto.getJobRole(),
+                dto.getUserId()
+        ));
     }
 
     @Override
     public boolean deleteEmployee(String id) throws SQLException, ClassNotFoundException {
-        return false;
+        return employeeDAO.delete(id);
     }
 
     @Override
     public EmployeeDTO searchEmployee(String id) throws SQLException, ClassNotFoundException {
-        return null;
+        Employee employee = employeeDAO.search(id);
+        return new EmployeeDTO(
+                employee.getId(),
+                employee.getName(),
+                employee.getAddress(),
+                employee.getTel(),
+                employee.getJobRole(),
+                employee.getUserId()
+        );
     }
 }

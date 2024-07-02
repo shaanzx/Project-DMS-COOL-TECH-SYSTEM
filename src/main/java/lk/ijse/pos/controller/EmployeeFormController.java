@@ -1,13 +1,12 @@
 package lk.ijse.pos.controller;
 
 import com.jfoenix.controls.JFXComboBox;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.Cursor;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -169,27 +168,76 @@ public class EmployeeFormController  implements Initializable {
 
     @FXML
     void btnEmpDeleteOnAction(ActionEvent event) {
-
+        try {
+            boolean isDeleted = employeeBO.deleteEmployee(empId);
+            if(isDeleted){
+                new Alert(Alert.AlertType.CONFIRMATION,"Deleted!");
+                loadAllEmployee();
+                cleartextField();
+                generateNextEmployeeId();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
     void btnEmpSaveOnAction(ActionEvent event) {
-
+        try {
+            boolean isSaved = employeeBO.saveEmployee(new EmployeeDTO(empId, empName, empAddress, tel, jobRole, userId));
+            if (isSaved) {
+                new Alert(Alert.AlertType.CONFIRMATION, "Saved").show();
+                loadAllEmployee();
+                cleartextField();
+                generateNextEmployeeId();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
     void btnEmpUpdateOnAction(ActionEvent event) {
-
+        try {
+            boolean isUpdated = employeeBO.updateEmployee(new EmployeeDTO(empId, empName, empAddress, tel, jobRole, userId));
+            if (isUpdated) {
+                new Alert(Alert.AlertType.CONFIRMATION, "Updated").show();
+                loadAllEmployee();
+                cleartextField();
+                generateNextEmployeeId();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
     void tblEmployeeClickOnAction(MouseEvent event) {
-
+        TablePosition tp = tblEmployee.getSelectionModel().getSelectedCells().get(0);
+        int row = tp.getRow();
+        ObservableList<TableColumn<EmployeeTm, ?> > columns = tblEmployee.getColumns();
+        txtEmpId.setText(columns.get(0).getCellData(row).toString());
+        txtEmpName.setText(columns.get(1).getCellData(row).toString());
+        txtEmpAddress.setText(columns.get(2).getCellData(row).toString());
+        txtEmpTel.setText(columns.get(3).getCellData(row).toString());
+        txtEmpJobRole.setText(columns.get(4).getCellData(row).toString());
+        tblEmployee.setCursor(Cursor.HAND);
     }
 
     @FXML
     void txtSearchEmployeeOnAction(ActionEvent event) {
-
+        try {
+            EmployeeDTO employeeDTO = employeeBO.searchEmployee(empId);
+            if (employeeDTO != null) {
+                txtEmpId.setText(employeeDTO.getId());
+                txtEmpName.setText(employeeDTO.getName());
+                txtEmpAddress.setText(employeeDTO.getAddress());
+                txtEmpTel.setText(employeeDTO.getTel());
+                txtEmpJobRole.setText(employeeDTO.getJobRole());
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

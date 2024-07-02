@@ -33,21 +33,33 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public boolean save(Employee entity) throws SQLException, ClassNotFoundException {
-        return false;
+        return SQLUtil.execute("INSERT INTO employee VALUES(?,?,?,?,?,?)",
+                entity.getId(),
+                entity.getName(),
+                entity.getAddress(),
+                entity.getTel(),
+                entity.getJobRole(),
+                entity.getUserId());
     }
 
     @Override
     public boolean update(Employee entity) throws SQLException, ClassNotFoundException {
-        return false;
+        return SQLUtil.execute("UPDATE employee SET eName=?, eAddress=?, eTel=?, ejobRole=?, uId=? WHERE eId=?",
+                entity.getName(),
+                entity.getAddress(),
+                entity.getTel(),
+                entity.getTel(),
+                entity.getJobRole(),
+                entity.getUserId());
     }
 
     @Override
     public boolean delete(String id) throws SQLException, ClassNotFoundException {
-        return false;
+        return SQLUtil.execute("DELETE FROM employee WHERE eId = ?",id);
     }
 
     @Override
     public Employee search(String id) throws SQLException, ClassNotFoundException {
-        return null;
+        return SQLUtil.execute("SELECT * FROM employee WHERE eId = ?",id);
     }
 }
