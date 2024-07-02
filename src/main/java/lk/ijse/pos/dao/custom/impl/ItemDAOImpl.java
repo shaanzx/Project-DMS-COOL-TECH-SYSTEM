@@ -23,7 +23,7 @@ public class ItemDAOImpl  implements ItemDAO {
     }
 
     @Override
-    public ArrayList<Item> getAll() throws SQLException, ClassNotFoundException {
+    public ArrayList<Item> getAll() throws SQLException, ClassNotFoundException  {
         ArrayList<Item> itemList = new ArrayList<>();
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM item");
         while (resultSet.next()) {

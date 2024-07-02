@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import lk.ijse.pos.bo.BOFactory;
@@ -16,7 +17,9 @@ import lk.ijse.pos.dto.VehicleDTO;
 import lk.ijse.pos.tm.VehicleTm;
 
 import java.net.URL;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -78,6 +81,14 @@ public class VehicleFormController implements Initializable {
         loadAllVehicles();
         setDate();
         generateNextVehicleId();
+        setCellValueFactory();
+    }
+
+    private void setCellValueFactory() {
+        colVehicleNo.setCellValueFactory(new PropertyValueFactory<>("vehicleNo"));
+        colVehicleModel.setCellValueFactory(new PropertyValueFactory<>("model"));
+        colVehicleType.setCellValueFactory(new PropertyValueFactory<>("type"));
+        colCustomerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
     }
 
     private void loadAllVehicles() {
@@ -92,9 +103,7 @@ public class VehicleFormController implements Initializable {
                         vehicleDTO.getCustomerId()
                 ));
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -103,7 +112,7 @@ public class VehicleFormController implements Initializable {
     }
 
     private void setDate() {
-
+        txtDate.setText(String.valueOf(LocalDate.now()));
     }
 
     @FXML
