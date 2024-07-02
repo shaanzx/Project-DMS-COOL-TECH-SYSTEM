@@ -23,6 +23,8 @@ public class BOFactory {
                 return new EmployeeBOImpl();
             case ITEM:
                 return new ItemBOImpl();
+            case VEHICLE:
+                new VehicleBOImpl();
             case USER:
                 return new UserBOImpl();
             default:
