@@ -31,12 +31,20 @@ public class VehicleDAOImpl implements VehicleDAO {
 
     @Override
     public boolean save(Vehicle entity) throws SQLException, ClassNotFoundException {
-        return false;
+        return SQLUtil.execute("INSERT INTO vehicle VALUES(?,?,?,?)",
+                entity.getVehicleNo(),
+                entity.getModel(),
+                entity.getType(),
+                entity.getCustomerId());
     }
 
     @Override
     public boolean update(Vehicle entity) throws SQLException, ClassNotFoundException {
-        return false;
+        return SQLUtil.execute("UPDATE vehicle SET vModel=?, vType=?, cid=? WHERE vNo=?",
+                entity.getModel(),
+                entity.getType(),
+                entity.getCustomerId(),
+                entity.getVehicleNo());
     }
 
     @Override

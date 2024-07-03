@@ -1,13 +1,11 @@
 package lk.ijse.pos.controller;
 
 import com.jfoenix.controls.JFXComboBox;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -15,7 +13,9 @@ import lk.ijse.pos.bo.BOFactory;
 import lk.ijse.pos.bo.custom.VehicleBO;
 import lk.ijse.pos.dto.VehicleDTO;
 import lk.ijse.pos.tm.VehicleTm;
+import lk.ijse.pos.util.Navigation;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -73,8 +73,8 @@ public class VehicleFormController implements Initializable {
     private Label vehicleTypeValidate;
 
     String vehicleNo = txtVehicleNo.getText();
-    String VehicleModel = txtVehicleModel.getText();
-    String VehicleType = txtVehicleType.getText();
+    String vehicleModel = txtVehicleModel.getText();
+    String vehicleType = txtVehicleType.getText();
     String customerId = cmbCusId.getSelectionModel().getSelectedItem().toString();
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -115,9 +115,21 @@ public class VehicleFormController implements Initializable {
         txtDate.setText(String.valueOf(LocalDate.now()));
     }
 
+    private void clearTextField(){
+        txtVehicleNo.clear();
+        txtVehicleModel.clear();
+        txtVehicleType.clear();
+        cmbCusId.getSelectionModel().clearSelection();
+        lblCustomerName.setText("");
+    }
+
     @FXML
     void btnAddNewCustomerOnAction(ActionEvent event) {
-
+        try {
+            Navigation.switchPaging(pagingPane,"customer_form.fxml");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
@@ -127,12 +139,29 @@ public class VehicleFormController implements Initializable {
 
     @FXML
     void btnVehicleSaveOnAction(ActionEvent event) {
-
+        try {
+            boolean isSaved = vehicleBO.saveVehicle(new VehicleDTO(vehicleNo, vehicleModel, vehicleType, customerId));
+            if (isSaved) {
+                new Alert(Alert.AlertType.CONFIRMATION,"Vehicle Details Saved!");
+                loadAllVehicles();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
     void btnVehicleUpdateOnAction(ActionEvent event) {
-
+        try {
+            boolean isUpdated = vehicleBO.updateVehicle(new VehicleDTO(vehicleNo, vehicleModel, vehicleType, customerId));
+            if(isUpdated) {
+                new Alert(Alert.AlertType.CONFIRMATION,"Vehicle Details Updated!");
+                loadAllVehicles();
+                clearTextField();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
@@ -142,6 +171,14 @@ public class VehicleFormController implements Initializable {
 
     @FXML
     void tblVehicleClickOnAction(MouseEvent event) {
+        TablePosition tp = tblVehicle.getSelectionModel().getSelectedCells().get(0);
+        int row = tp.getRow();
+        ObservableList<TableColumn<VehicleTm,?> > columns = tblVehicle.getColumns();
+
+        txtVehicleNo.setText(columns.get(0).getCellData(row).toString());
+        txtVehicleModel.setText(columns.get(1).getCellData(row).toString());
+        txtVehicleType.setText(columns.get(2).getCellData(row).toString());
+        //cmbCusId.setValue(columns.get(3).getCellData(row).toString());
 
     }
 
