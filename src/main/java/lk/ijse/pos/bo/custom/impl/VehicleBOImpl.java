@@ -3,6 +3,7 @@ package lk.ijse.pos.bo.custom.impl;
 
 import lk.ijse.pos.bo.custom.VehicleBO;
 import lk.ijse.pos.dao.DAOFactory;
+import lk.ijse.pos.dao.custom.CustomerDAO;
 import lk.ijse.pos.dao.custom.VehicleDAO;
 import lk.ijse.pos.dto.EmployeeDTO;
 import lk.ijse.pos.dto.VehicleDTO;
@@ -70,4 +71,5 @@ public class VehicleBOImpl implements VehicleBO {
                 vehicle.getCustomerId()
         );
     }
+
 }

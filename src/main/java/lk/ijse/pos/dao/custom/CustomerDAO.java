@@ -6,7 +6,11 @@ import lk.ijse.pos.entity.Customer;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public interface CustomerDAO extends CrudDAO<Customer> {
     Customer searchByMobile(String tel) throws SQLException;
+
+    List<String> getCustomerId() throws SQLException, ClassNotFoundException;
 }

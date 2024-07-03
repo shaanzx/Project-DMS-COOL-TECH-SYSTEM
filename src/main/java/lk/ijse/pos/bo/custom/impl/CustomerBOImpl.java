@@ -9,6 +9,7 @@ import lk.ijse.pos.entity.Customer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CustomerBOImpl implements CustomerBO {
 
@@ -58,4 +59,8 @@ public class CustomerBOImpl implements CustomerBO {
                 customer.getUserId());
     }
 
+    @Override
+    public List<String> getCustomerId() throws SQLException, ClassNotFoundException {
+        return customerDAO.getCustomerId();
+    }
 }

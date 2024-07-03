@@ -81,4 +81,15 @@ public class CustomerDAOImpl  implements CustomerDAO {
     public Customer searchByMobile(String tel) throws SQLException {
         return null;
     }
+
+    @Override
+    public List<String> getCustomerId() throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = SQLUtil.execute("SELECT vNo FROM vehicle");
+
+        List<String> customerIdList = new ArrayList<>();
+        while (resultSet.next()) {
+            customerIdList.add(resultSet.getString(1));
+        }
+        return customerIdList;
+    }
 }

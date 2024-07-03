@@ -7,6 +7,7 @@ import lk.ijse.pos.entity.Vehicle;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public interface VehicleBO extends SuperBO {
 
@@ -21,4 +22,5 @@ public interface VehicleBO extends SuperBO {
     boolean deleteVehicle(String id) throws SQLException, ClassNotFoundException;
 
     VehicleDTO searchVehicle(String id) throws SQLException, ClassNotFoundException;
+
 }

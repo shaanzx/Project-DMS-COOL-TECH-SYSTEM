@@ -7,6 +7,7 @@ import lk.ijse.pos.entity.Customer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public interface CustomerBO extends SuperBO {
     ResultSet generateCustomerId() throws SQLException, ClassNotFoundException;
@@ -21,4 +22,5 @@ public interface CustomerBO extends SuperBO {
 
     CustomerDTO searchCustomer(String id) throws SQLException, ClassNotFoundException;
 
+    List<String> getCustomerId() throws SQLException, ClassNotFoundException;
 }

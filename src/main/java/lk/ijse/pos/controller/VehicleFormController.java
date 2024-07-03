@@ -1,6 +1,7 @@
 package lk.ijse.pos.controller;
 
 import com.jfoenix.controls.JFXComboBox;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,7 +11,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import lk.ijse.pos.bo.BOFactory;
+import lk.ijse.pos.bo.custom.CustomerBO;
 import lk.ijse.pos.bo.custom.VehicleBO;
+import lk.ijse.pos.dto.CustomerDTO;
 import lk.ijse.pos.dto.VehicleDTO;
 import lk.ijse.pos.tm.VehicleTm;
 import lk.ijse.pos.util.Navigation;
@@ -21,14 +24,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class VehicleFormController implements Initializable {
 
     VehicleBO vehicleBO = (VehicleBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.VEHICLE);
 
+    CustomerBO customerBO = (CustomerBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.CUSTOMER);
+
     @FXML
-    private JFXComboBox<?> cmbCusId;
+    private JFXComboBox<String> cmbCusId;
 
     @FXML
     private TableColumn<?, ?> colCustomerId;
@@ -82,6 +88,20 @@ public class VehicleFormController implements Initializable {
         setDate();
         generateNextVehicleId();
         setCellValueFactory();
+        getCMBCustomerId();
+    }
+
+    private void getCMBCustomerId() {
+        ObservableList<String> customerList = FXCollections.observableArrayList();
+        try {
+            List<String> idList = customerBO.getCustomerId();
+            for(String id : idList){
+                customerList.add(id);
+            }
+            cmbCusId.setItems(customerList);
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void setCellValueFactory() {
@@ -175,7 +195,12 @@ public class VehicleFormController implements Initializable {
 
     @FXML
     void cmbCustomerIdOnAction(ActionEvent event) {
-
+        try {
+            CustomerDTO customerDTO = customerBO.searchCustomer(customerId);
+            lblCustomerName.setText(customerDTO.getName());
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
