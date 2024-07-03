@@ -48,12 +48,22 @@ public class VehicleDAOImpl implements VehicleDAO {
     }
 
     @Override
-    public boolean delete(String id) throws SQLException, ClassNotFoundException {
-        return false;
+    public boolean delete(String vehicleNo) throws SQLException, ClassNotFoundException {
+        return SQLUtil.execute("DELETE FROM vehicle WHERE vNo = ?",vehicleNo);
     }
 
     @Override
-    public Vehicle search(String id) throws SQLException, ClassNotFoundException {
-        return null;
+    public Vehicle search(String vehicleNo) throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM vehicle WHERE vNo = ?",vehicleNo);
+        Vehicle vehicle = null;
+        if(resultSet.next()){
+            String vNo = resultSet.getString(1);
+            String model = resultSet.getString(2);
+            String type = resultSet.getString(3);
+            String customerId = resultSet.getString(4);
+
+            vehicle = new Vehicle(vNo,model,type,customerId);
+        }
+        return vehicle;
     }
 }

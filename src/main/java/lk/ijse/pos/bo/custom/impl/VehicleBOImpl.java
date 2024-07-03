@@ -56,12 +56,18 @@ public class VehicleBOImpl implements VehicleBO {
     }
 
     @Override
-    public boolean deleteVehicle(String id) throws SQLException, ClassNotFoundException {
-        return false;
+    public boolean deleteVehicle(String vehicleNo) throws SQLException, ClassNotFoundException {
+        return vehicleDAO.delete(vehicleNo);
     }
 
     @Override
-    public Vehicle searchVehicle(String id) throws SQLException, ClassNotFoundException {
-        return null;
+    public VehicleDTO searchVehicle(String vehicleNo) throws SQLException, ClassNotFoundException {
+        Vehicle vehicle = vehicleDAO.search(vehicleNo);
+        return new VehicleDTO(
+                vehicle.getVehicleNo(),
+                vehicle.getModel(),
+                vehicle.getType(),
+                vehicle.getCustomerId()
+        );
     }
 }

@@ -207,8 +207,9 @@ public class CustomerFormController implements Initializable {
             if(isSaved){
                 new Alert(Alert.AlertType.CONFIRMATION, "Customer is Saved").show();
                 tblCustomer.getItems().add(new CustomerTm(cusId,cusName,cusAddress,cusTel,cusEmail));
+                tblCustomer.refresh();
                 clearTextFields();
-
+                generateNewCustomerId();
             }
         } catch (SQLException | ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, "Failed to save the customer " + e.getMessage()).show();

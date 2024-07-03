@@ -134,7 +134,16 @@ public class VehicleFormController implements Initializable {
 
     @FXML
     void btnVehicleDeleteOnAction(ActionEvent event) {
-
+        try {
+            boolean isDeleted = vehicleBO.deleteVehicle(vehicleNo);
+            if(isDeleted){
+                new Alert(Alert.AlertType.CONFIRMATION,"Vehicle details deleted!");
+                loadAllVehicles();
+                clearTextField();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
@@ -184,7 +193,17 @@ public class VehicleFormController implements Initializable {
 
     @FXML
     void txtSearchVehicleOnAction(ActionEvent event) {
-
+        try {
+            VehicleDTO vehicleDTO = vehicleBO.searchVehicle(vehicleNo);
+            if(vehicleDTO != null){
+                txtVehicleNo.setText(vehicleDTO.getVehicleNo());
+                txtVehicleModel.setText(vehicleDTO.getModel());
+                txtVehicleType.setText(vehicleDTO.getType());
+                cmbCusId.getSelectionModel().clearSelection();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
