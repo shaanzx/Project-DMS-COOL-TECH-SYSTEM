@@ -16,26 +16,36 @@ import javafx.scene.layout.Pane;
 import lk.ijse.pos.bo.BOFactory;
 import lk.ijse.pos.bo.custom.CustomerBO;
 import lk.ijse.pos.bo.custom.ItemBO;
+import lk.ijse.pos.bo.custom.PaymentBO;
 import lk.ijse.pos.bo.custom.PlaceOrderBO;
-import lk.ijse.pos.dto.CustomerDTO;
-import lk.ijse.pos.dto.ItemDTO;
+import lk.ijse.pos.dao.custom.OrderDetailsDAO;
+import lk.ijse.pos.db.DBConnection;
+import lk.ijse.pos.dto.*;
 import lk.ijse.pos.tm.AddToCartTm;
+import lk.ijse.pos.util.Mail;
 import lk.ijse.pos.util.Navigation;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
+import javax.mail.MessagingException;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class PlaceOrderFormController implements Initializable {
 
     CustomerBO customerBO = (CustomerBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.CUSTOMER);
     ItemBO itemBO = (ItemBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.ITEM);
     PlaceOrderBO placeOrderBO = (PlaceOrderBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.PLACE_ORDER);
+    PaymentBO paymentBO = (PaymentBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.PAYMENT);
 
     @FXML
     private JFXButton btnOrderConfirm;
@@ -206,6 +216,23 @@ public class PlaceOrderFormController implements Initializable {
         lblNetAmount.setText(String.valueOf(netAmount));
     }
 
+    private File getBill() throws JRException, SQLException {
+        JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/reports/order.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
+        JasperPrint jasperPrint = null;
+        try {
+            jasperPrint = JasperFillManager.fillReport(jasperReport, null, DBConnection.getDbConnection().getConnection());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        // Export the report to a PDF file
+        File pdfFile = new File("Order Receipt.pdf");
+        JasperExportManager.exportReportToPdfFile(jasperPrint, pdfFile.getAbsolutePath());
+
+        return pdfFile;
+    }
+
     @FXML
     void btnAddToCartOnAction(ActionEvent event) {
         String itemCode = cmbItemCode.getValue();
@@ -259,7 +286,89 @@ public class PlaceOrderFormController implements Initializable {
 
     @FXML
     void btnPlaceOrderOnAction(ActionEvent event) {
+        String orderId = lblOrderId.getText();
+        String customerId = cmbCustomerId.getValue();
+        Date date = Date.valueOf(lblDate.getText());
 
+        OrderDTO orderDTO = new OrderDTO(orderId, customerId, date);
+
+        CustomerDTO customerDTO = null;
+        try {
+            customerDTO = customerBO.searchCustomer(customerId);
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        String cusEmail = customerDTO.getEmail();
+
+        List<OrderDetailsDTO> orderList = new ArrayList<>();
+        double netAmount = 0;
+        double orderAmount = 0;
+
+        for(int i=0; i < tblOrderDetail.getItems().size(); i++){
+            AddToCartTm addToCartTm = cartList.get(i);
+
+            OrderDetailsDTO orderDetails = new OrderDetailsDTO(
+                    orderId,
+                    addToCartTm.getItemCode(),
+                    date,
+                    addToCartTm.getQty(),
+                    addToCartTm.getUnitPrice(),
+                    orderAmount += addToCartTm.getQty() * addToCartTm.getUnitPrice()
+            ) {
+            };
+            orderList.add(orderDetails);
+
+            netAmount += addToCartTm.getTotalAmount();
+        }
+        double printcash = Double.parseDouble(txtCash.getText());
+        double balance = Double.parseDouble(lblBalance.getText());
+
+        String paymentId = null;
+        try {
+            paymentId = paymentBO.generateId();
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        PaymentDTO payment = new PaymentDTO(paymentId, customerId, orderId,null, netAmount, date,printcash,balance);
+
+        OrderPlaceDTO orderPlace = new OrderPlaceDTO(orderDTO, orderList , payment);
+        try {
+            boolean isOrderPlaced = false;
+            try {
+                isOrderPlaced = placeOrderBO.orderPlace(orderPlace);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            if (isOrderPlaced) {
+                //new Alert(Alert.AlertType.CONFIRMATION, "Order Placed Successfully").show();
+                ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.OK_DONE);
+                ButtonType no = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+                Optional<ButtonType> result = new Alert(Alert.AlertType.CONFIRMATION, "Order Completed.Do you want to generate a bill?", yes, no).showAndWait();
+
+                if (result.orElse(no) == yes) {
+                    Map<String, Object> parameters = new HashMap<>();
+                    parameters.put("param1",printcash);
+                    parameters.put("param2",balance);
+                    InputStream resource = this.getClass().getResourceAsStream("/reports/order.jrxml");
+                    try {
+                        Mail.setMail("Order Completed", "Order Completed", "Thank you for your order. Your order is successfully placed. Your order id is "+orderId+".", cusEmail, getBill());
+                    } catch (MessagingException | IOException | JRException e) {
+                        throw new RuntimeException(e);
+                    }
+                    try{
+                        JasperReport jasperReport = JasperCompileManager.compileReport(resource);
+                        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,parameters, DBConnection.getDbConnection().getConnection());
+                        JasperViewer.viewReport(jasperPrint, false);
+                    }catch (JRException | ClassNotFoundException e){
+                        throw new RuntimeException(e);
+                    }
+                }
+            } else {
+                new Alert(Alert.AlertType.WARNING, "Something went wrong. Please try again").show();
+            }
+        }catch (SQLException e){
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
     }
 
     @FXML

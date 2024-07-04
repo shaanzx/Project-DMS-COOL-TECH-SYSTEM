@@ -6,6 +6,7 @@ import lk.ijse.pos.bo.custom.ItemBO;
 import lk.ijse.pos.dao.SQLUtil;
 import lk.ijse.pos.dao.custom.ItemDAO;
 import lk.ijse.pos.entity.Item;
+import lk.ijse.pos.entity.OrderDetails;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,6 +27,11 @@ public class ItemDAOImpl  implements ItemDAO {
             itemCodes.add(resultSet.getString(1 ));
          }
          return itemCodes;
+    }
+
+    @Override
+    public boolean updateItemQty(List<OrderDetails> orderDetails) throws SQLException {
+        return false;
     }
 
     @Override

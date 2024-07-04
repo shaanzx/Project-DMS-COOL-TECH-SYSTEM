@@ -28,6 +28,6 @@ public interface PlaceOrderBO extends SuperBO {
 
     OrderDTO searchOrder(String id) throws SQLException, ClassNotFoundException;
 
-    boolean orderPlace(OrderPlaceDTO orderPlacedto) throws SQLException;
+    boolean orderPlace(OrderPlaceDTO orderPlacedto) throws SQLException, ClassNotFoundException;
 
 }
