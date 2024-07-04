@@ -32,7 +32,7 @@ public class DAOFactory {
            case ORDER:
                return new OrderDAOImpl();
            case ORDER_DETAILS:
-               return OrderDetailsDAOImpl();
+               return new OrderDetailsDAOImpl();
            case VEHICLE:
                return new VehicleDAOImpl();
            case USER:
