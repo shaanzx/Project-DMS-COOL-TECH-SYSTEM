@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface CustomerDAO extends CrudDAO<Customer> {
-    Customer searchByMobile(String tel) throws SQLException;
+    Customer searchByMobile(String tel) throws SQLException, ClassNotFoundException;
 
     List<String> getCustomerId() throws SQLException, ClassNotFoundException;
 }

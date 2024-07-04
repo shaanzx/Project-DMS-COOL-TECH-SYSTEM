@@ -10,11 +10,22 @@ import lk.ijse.pos.entity.Item;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ItemDAOImpl  implements ItemDAO {
     @Override
     public ObservableList<XYChart.Series<String, Integer>> getDataToBarChart() throws SQLException {
         return null;
+    }
+
+    @Override
+    public List<String> getItemCodes() throws SQLException, ClassNotFoundException {
+        List<String> itemCodes = new ArrayList<>();
+        ResultSet resultSet = SQLUtil.execute("SELECT iCode FROM item");
+         while (resultSet.next()) {
+            itemCodes.add(resultSet.getString(1 ));
+         }
+         return itemCodes;
     }
 
     @Override

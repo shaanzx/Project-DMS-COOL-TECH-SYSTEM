@@ -78,8 +78,19 @@ public class CustomerDAOImpl  implements CustomerDAO {
     }
 
     @Override
-    public Customer searchByMobile(String tel) throws SQLException {
-        return null;
+    public Customer searchByMobile(String tel) throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM customer WHERE tel = ?",tel);
+        Customer customer = null;
+        if (resultSet.next()) {
+            String cusId = resultSet.getString(1);
+            String name = resultSet.getString(2);
+            String address = resultSet.getString(3);
+            String telephone = resultSet.getString(4);
+            String email = resultSet.getString(5);
+            String userId = resultSet.getString(6);
+            customer = new Customer(cusId, name, address, telephone, email, userId);
+        }
+        return customer;
     }
 
     @Override

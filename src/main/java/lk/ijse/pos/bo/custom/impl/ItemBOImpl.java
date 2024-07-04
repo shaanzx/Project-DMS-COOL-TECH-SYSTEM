@@ -12,6 +12,7 @@ import lk.ijse.pos.entity.Item;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ItemBOImpl implements ItemBO {
 
@@ -78,5 +79,10 @@ public class ItemBOImpl implements ItemBO {
                 item.getUnitPrice(),
                 item.getDate()
         );
+    }
+
+    @Override
+    public List<String> getItemCodes() throws SQLException, ClassNotFoundException {
+        return itemDAO.getItemCodes();
     }
 }

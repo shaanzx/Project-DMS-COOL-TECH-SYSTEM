@@ -2,14 +2,13 @@ package lk.ijse.pos.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.Cursor;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -18,11 +17,18 @@ import lk.ijse.pos.bo.BOFactory;
 import lk.ijse.pos.bo.custom.CustomerBO;
 import lk.ijse.pos.bo.custom.ItemBO;
 import lk.ijse.pos.bo.custom.PlaceOrderBO;
+import lk.ijse.pos.dto.CustomerDTO;
+import lk.ijse.pos.dto.ItemDTO;
+import lk.ijse.pos.tm.AddToCartTm;
 import lk.ijse.pos.util.Navigation;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class PlaceOrderFormController implements Initializable {
@@ -35,10 +41,10 @@ public class PlaceOrderFormController implements Initializable {
     private JFXButton btnOrderConfirm;
 
     @FXML
-    private JFXComboBox<?> cmbCustomerId;
+    private JFXComboBox<String> cmbCustomerId;
 
     @FXML
-    private JFXComboBox<?> cmbItemCode;
+    private JFXComboBox<String> cmbItemCode;
 
     @FXML
     private TableColumn<?, ?> colDeleteItem;
@@ -95,7 +101,7 @@ public class PlaceOrderFormController implements Initializable {
     private Pane pagingPane;
 
     @FXML
-    private TableView<?> tblOrderDetail;
+    private TableView<AddToCartTm> tblOrderDetail;
 
     @FXML
     private TextField txtCash;
@@ -106,22 +112,77 @@ public class PlaceOrderFormController implements Initializable {
     @FXML
     private TextField txtQty;
 
+    private ObservableList<AddToCartTm> cartList = FXCollections.observableArrayList();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        lblOrderId.setText(generateNextOrderId());
         setCellValueFactory();
         setDate();
-        generateNextOrderId();
         getCustomerId();
         getItemCode();
+        lblNeeded.setVisible(false);
+        btnOrderConfirm.setDisable(true);
     }
 
     private void getItemCode() {
+        ObservableList<String> itemCodes = FXCollections.observableArrayList();
+        try {
+            List<String> allItemCode = itemBO.getItemCodes();
+            for(String itemCode : allItemCode) {
+                itemCodes.add(itemCode);
+            }
+            cmbItemCode.setItems(itemCodes);
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void getCustomerId() {
+        ObservableList<String> customerIds = FXCollections.observableArrayList();
+        try {
+            List<String> customerId = customerBO.getCustomerId();
+            for(String ids : customerId) {
+                customerIds.add(ids);
+            }
+            cmbCustomerId.setItems(customerIds);
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void generateNextOrderId() {
+    private String generateNextOrderId() {
+        try {
+            ResultSet resultSet = placeOrderBO.generateNextOrderId();
+            String currentOrderId = null;
+            if(resultSet.next()) {
+                currentOrderId = resultSet.getString(1);
+                return nextOrderId(currentOrderId);
+            }
+            return nextOrderId(null);
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String nextOrderId(String currentOrderId) {
+        String nextOrderId=null;
+        if (currentOrderId==null){
+            nextOrderId="OR001";
+        }else {
+            String data = currentOrderId.replace("OR", "");
+            int num = Integer.parseInt(data);
+            num++;
+
+            if (num >= 1 && num <= 9) {
+                nextOrderId = "OR00" + num;
+            } else if (num >= 10 && num <= 99) {
+                nextOrderId = "OR0" + num;
+            } else if (num >= 100 && num <= 999) {
+                nextOrderId = "OR" + num;
+            }
+        }
+        return nextOrderId;
     }
 
     private void setDate() {
@@ -137,9 +198,54 @@ public class PlaceOrderFormController implements Initializable {
         colDeleteItem.setCellValueFactory(new PropertyValueFactory<>("btnDelete"));
     }
 
+    private void calculateNetAmount() {
+        double netAmount = 0;
+        for(int i = 0; i < tblOrderDetail.getItems().size(); i++){
+            netAmount += (double) colTotalAmount.getCellData(i);
+        }
+        lblNetAmount.setText(String.valueOf(netAmount));
+    }
+
     @FXML
     void btnAddToCartOnAction(ActionEvent event) {
+        String itemCode = cmbItemCode.getValue();
+        String itemName = lblItemName.getText();
+        double unitPrice = Double.parseDouble(lblUnitPrice.getText());
+        int qty = Integer.parseInt(txtQty.getText());
+        double totalAmount = unitPrice * qty;
+        JFXButton btnDelete = new JFXButton("Delete");
+        btnDelete.setCursor(Cursor.HAND);
 
+        btnDelete.setOnAction((e)->{
+            ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.OK_DONE);
+            ButtonType no = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+            Optional<ButtonType> type = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure to delete?", yes, no).showAndWait();
+            if(type.orElse(no) == yes){
+                int index = tblOrderDetail.getSelectionModel().getSelectedIndex();
+                cartList.remove(index);
+                tblOrderDetail.refresh();
+                calculateNetAmount();
+            }
+        });
+        for(int i = 0; i < tblOrderDetail.getItems().size(); i++) {
+            if (itemCode.equals(colItemCode.getCellData(i))) {
+                qty += cartList.get(i).getQty();
+                totalAmount = unitPrice * qty;
+                cartList.get(i).setQty(qty);
+                cartList.get(i).setTotalAmount(totalAmount);
+                tblOrderDetail.refresh();
+                calculateNetAmount();
+                txtQty.clear();
+                cmbItemCode.requestFocus();
+                return;
+            }
+        }
+        AddToCartTm act = new AddToCartTm(itemCode, itemName, unitPrice, qty, totalAmount, btnDelete);
+        cartList.add(act);
+        tblOrderDetail.setItems(cartList);
+        txtQty.clear();
+        calculateNetAmount();
     }
 
     @FXML
@@ -158,22 +264,63 @@ public class PlaceOrderFormController implements Initializable {
 
     @FXML
     void btnViewOrderDetailsOnAction(ActionEvent event) {
-
+        Navigation.changeStage("/view/viewOrders_Form.fxml","Order Details Form");
     }
 
     @FXML
     void cmbCustomerIdOnAction(ActionEvent event) {
+        String customerId = cmbCustomerId.getValue();
 
+        try {
+            CustomerDTO customerDTO = customerBO.searchCustomer(customerId);
+            lblCustomerName.setText(customerDTO.getName());
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
     void cmbItemCodeOnAction(ActionEvent event) {
+        String itemCode = cmbItemCode.getValue();
 
+        try {
+            ItemDTO itemDTO = itemBO.searchItem(itemCode);
+            if(itemDTO!=null) {
+                lblItemName.setText(itemDTO.getDescription());
+                lblUnitPrice.setText(String.valueOf(itemDTO.getUnitPrice()));
+                lblUnitPrice.setText(String.valueOf(itemDTO.getQtyOnHand()));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
     void keyCash(KeyEvent event) {
-
+        if (!txtCash.getText().isEmpty()) {
+            double balance = Double.parseDouble(txtCash.getText()) - Double.parseDouble(lblNetAmount.getText());
+            if (balance >= 0) {
+                txtCash.setStyle("-fx-text-fill: black");
+                lblBalance.setText(String.valueOf(balance));
+                lblNeeded.setVisible(false);
+                lblMoreMoney.setText("");
+                btnOrderConfirm.setDisable(false);
+                lblBalance.setVisible(true);
+            } else if (balance < 0) {
+                txtCash.setStyle("-fx-text-fill: black");
+                btnOrderConfirm.setDisable(true);
+                double positbalance = Math.abs(balance);
+                lblNeeded.setVisible(true);
+                lblMoreMoney.setText(positbalance + "/=");
+                lblBalance.setVisible(false);
+            }
+        } else {
+            btnOrderConfirm.setDisable(true);
+            txtCash.setStyle("-fx-text-fill: red");
+            lblBalance.setVisible(false);
+            lblNeeded.setVisible(false);
+            lblMoreMoney.setText("");
+        }
     }
 
     @FXML
@@ -188,12 +335,20 @@ public class PlaceOrderFormController implements Initializable {
 
     @FXML
     void txtQtyOnAction(ActionEvent event) {
-
+        btnAddToCartOnAction(event);
     }
 
     @FXML
     void txtSearchCustomerTelephoneOnAction(ActionEvent event) {
-
+        String tel = txtCustomerMobile.getText();
+        try {
+            CustomerDTO customerDTO = customerBO.searchByMobile(tel);
+            if(customerDTO != null){
+                lblCustomerName.setText(customerDTO.getName());
+                cmbCustomerId.setValue(customerDTO.getId());
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
-
 }

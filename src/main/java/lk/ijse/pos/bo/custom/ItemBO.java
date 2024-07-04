@@ -8,6 +8,7 @@ import lk.ijse.pos.dto.ItemDTO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public interface ItemBO extends SuperBO {
     ObservableList<XYChart.Series<String, Integer>> getDataToBarChart() throws SQLException;
@@ -23,4 +24,6 @@ public interface ItemBO extends SuperBO {
     boolean deleteItem(String id) throws SQLException, ClassNotFoundException;
 
     ItemDTO searchItem(String id) throws SQLException, ClassNotFoundException;
+
+    List<String> getItemCodes() throws SQLException, ClassNotFoundException;
 }
