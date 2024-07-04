@@ -90,7 +90,7 @@ public class CustomerFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        generateNewCustomerId();
+        txtCusId.setText(generateNewCustomerId());
         loadAllCustomer();
         setCellValueFactory();
         setDate();

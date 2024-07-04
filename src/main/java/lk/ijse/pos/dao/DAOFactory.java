@@ -27,14 +27,18 @@ public class DAOFactory {
                 return new CustomerDAOImpl();
            case EMPLOYEE:
                return new EmployeeDAOImpl();
-            case ITEM:
-                return new ItemDAOImpl();
-            case VEHICLE:
-                return new VehicleDAOImpl();
-            case USER:
-                return new UserDAOImpl();
-            default:
-                return null;
+           case ITEM:
+               return new ItemDAOImpl();
+           case ORDER:
+               return new OrderDAOImpl();
+           case ORDER_DETAILS:
+               return OrderDetailsDAOImpl();
+           case VEHICLE:
+               return new VehicleDAOImpl();
+           case USER:
+               return new UserDAOImpl();
+           default:
+               return null;
         }
     }
 }
