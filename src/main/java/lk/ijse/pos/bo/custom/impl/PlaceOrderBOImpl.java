@@ -6,6 +6,7 @@ import lk.ijse.pos.dao.custom.ItemDAO;
 import lk.ijse.pos.dao.custom.OrderDAO;
 import lk.ijse.pos.dao.custom.OrderDetailsDAO;
 import lk.ijse.pos.dto.OrderDTO;
+import lk.ijse.pos.dto.OrderPlaceDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -44,5 +45,10 @@ public class PlaceOrderBOImpl implements PlaceOrderBO {
     @Override
     public OrderDTO searchOrder(String id) throws SQLException, ClassNotFoundException {
         return null;
+    }
+
+    @Override
+    public  boolean orderPlace(OrderPlaceDTO orderPlacedto) throws SQLException {
+        return false;
     }
 }

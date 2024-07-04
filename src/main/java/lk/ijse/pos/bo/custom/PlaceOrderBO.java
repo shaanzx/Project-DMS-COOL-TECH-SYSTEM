@@ -7,6 +7,7 @@ import lk.ijse.pos.dao.custom.OrderDAO;
 import lk.ijse.pos.dao.custom.OrderDetailsDAO;
 import lk.ijse.pos.dao.custom.impl.OrderDAOImpl;
 import lk.ijse.pos.dto.OrderDTO;
+import lk.ijse.pos.dto.OrderPlaceDTO;
 import lk.ijse.pos.entity.Order;
 
 import java.sql.ResultSet;
@@ -26,4 +27,7 @@ public interface PlaceOrderBO extends SuperBO {
     boolean deleteOrder(String id) throws SQLException, ClassNotFoundException;
 
     OrderDTO searchOrder(String id) throws SQLException, ClassNotFoundException;
+
+    boolean orderPlace(OrderPlaceDTO orderPlacedto) throws SQLException;
+
 }
