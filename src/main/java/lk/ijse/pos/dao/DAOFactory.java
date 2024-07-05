@@ -12,7 +12,7 @@ public class DAOFactory {
     public  static DAOFactory daoFactory;
 
     public enum DAOType{
-        CUSTOMER,EMPLOYEE,DASHBOARD,ITEM,ORDER,ORDER_DETAILS,PAYMENT,REGISTER,REPAIR,USER,VEHICLE
+        CUSTOMER,EMPLOYEE,DASHBOARD,ITEM,ORDER,ORDER_DETAILS,PAYMENT,REGISTER,REPAIR,USER,VEHICLE,VIEW_ORDER
     }
 
     public DAOFactory() {}
@@ -39,6 +39,8 @@ public class DAOFactory {
                return new VehicleDAOImpl();
            case USER:
                return new UserDAOImpl();
+            case VIEW_ORDER:
+                return new QueryDAOImpl();
            default:
                return null;
         }

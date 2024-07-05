@@ -7,7 +7,7 @@ public class BOFactory {
     public static BOFactory boFactory;
 
     public enum BOType{
-        CUSTOMER,EMPLOYEE,DASHBOARD,ITEM,PLACE_ORDER,PAYMENT,REGISTER,REPAIR,USER,VEHICLE
+        CUSTOMER,EMPLOYEE,DASHBOARD,ITEM,PLACE_ORDER,PAYMENT,REGISTER,REPAIR,USER,VEHICLE,VIEW_ORDER
     }
     public BOFactory() {}
 
@@ -29,6 +29,8 @@ public class BOFactory {
                     return new PaymentBOImpl();
             case VEHICLE:
                 new VehicleBOImpl();
+            case VIEW_ORDER:
+                new ViewOrderBOImpl();
             case USER:
                 return new UserBOImpl();
             default:
