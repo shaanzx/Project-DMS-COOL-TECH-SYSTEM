@@ -1,15 +1,12 @@
 package lk.ijse.pos.util;
 
 
-import com.mysql.cj.Session;
 import javafx.scene.control.Alert;
 
 import javax.mail.*;
 import javax.mail.internet.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
 import java.util.Properties;
 
 public class Mail {
