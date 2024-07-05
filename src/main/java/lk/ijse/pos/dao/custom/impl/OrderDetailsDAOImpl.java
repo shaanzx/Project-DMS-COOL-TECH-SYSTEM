@@ -1,5 +1,6 @@
 package lk.ijse.pos.dao.custom.impl;
 
+import lk.ijse.pos.dao.SQLUtil;
 import lk.ijse.pos.dao.custom.OrderDetailsDAO;
 import lk.ijse.pos.entity.OrderDetails;
 
@@ -40,6 +41,21 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
 
     @Override
     public boolean save(ArrayList<OrderDetails> orderDetailsList) throws SQLException, ClassNotFoundException {
-        return false;
+        for(OrderDetails orderDetails : orderDetailsList){
+            if(!orderSave(orderDetails)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean orderSave(OrderDetails orderDetails) throws SQLException, ClassNotFoundException {
+        return SQLUtil.execute("INSERT INTO orderdetails VALUES(?,?,?,?,?,?)",
+                orderDetails.getOrderId(),
+                orderDetails.getItemCode(),
+                orderDetails.getOrderDate(),
+                orderDetails.getQty(),
+                orderDetails.getUnitPrice(),
+                orderDetails.getOrderAmount());
     }
 }
