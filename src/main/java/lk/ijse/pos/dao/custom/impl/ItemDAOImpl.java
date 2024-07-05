@@ -30,11 +30,6 @@ public class ItemDAOImpl  implements ItemDAO {
     }
 
     @Override
-    public boolean updateItemQty(List<OrderDetails> orderDetails) throws SQLException {
-        return false;
-    }
-
-    @Override
     public ResultSet generateId() throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("SELECT iCode FROM item ORDER BY iCode DESC LIMIT 1");
     }
@@ -101,4 +96,21 @@ public class ItemDAOImpl  implements ItemDAO {
         }
         return item;
     }
+
+    @Override
+    public boolean updateItemQty(List<OrderDetails> orderDetails) throws SQLException, ClassNotFoundException {
+        for(OrderDetails orderDetail : orderDetails) {
+            if(!updateItem(orderDetail)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean updateItem(OrderDetails orderDetail) throws SQLException, ClassNotFoundException {
+        return SQLUtil.execute("UPDATE item SET qtyOnHand = qtyOnHand - ? WHERE iCode = ?",
+                orderDetail.getQty(),
+                orderDetail.getItemCode());
+    }
+
 }
