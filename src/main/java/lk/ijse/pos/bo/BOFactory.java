@@ -1,13 +1,12 @@
 package lk.ijse.pos.bo;
 
-import lk.ijse.pos.bo.custom.CustomerBO;
 import lk.ijse.pos.bo.custom.impl.*;
 
 public class BOFactory {
     public static BOFactory boFactory;
 
     public enum BOType{
-        CUSTOMER,EMPLOYEE,DASHBOARD,ITEM,PLACE_ORDER,PAYMENT,REGISTER,REPAIR,USER,VEHICLE,VIEW_ORDER
+        CUSTOMER,EMPLOYEE,DASHBOARD,ITEM,PLACE_ORDER,PAYMENT,REGISTER,REPAIR,USER,VEHICLE,VIEW_ORDER,VIEW_REPAIR
     }
     public BOFactory() {}
 
@@ -30,7 +29,9 @@ public class BOFactory {
             case VEHICLE:
                 new VehicleBOImpl();
             case VIEW_ORDER:
-                new ViewOrderBOImpl();
+                new OrderBOImpl();
+            case VIEW_REPAIR:
+                new RepairBOImpl();
             case USER:
                 return new UserBOImpl();
             default:

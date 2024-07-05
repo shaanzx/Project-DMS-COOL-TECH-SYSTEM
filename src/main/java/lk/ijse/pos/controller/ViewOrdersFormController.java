@@ -11,7 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import lk.ijse.pos.bo.BOFactory;
-import lk.ijse.pos.bo.custom.ViewOrderBO;
+import lk.ijse.pos.bo.custom.OrderBO;
 import lk.ijse.pos.dto.ViewOrdersDTO;
 import lk.ijse.pos.tm.ViewOrderTm;
 
@@ -22,7 +22,7 @@ import java.util.ResourceBundle;
 
 public class ViewOrdersFormController implements Initializable {
 
-    ViewOrderBO viewOrderBO = (ViewOrderBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.VIEW_ORDER);
+    OrderBO viewOrderBO = (OrderBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.VIEW_ORDER);
 
     @FXML
     private TableColumn<?, ?> colCustomerId;

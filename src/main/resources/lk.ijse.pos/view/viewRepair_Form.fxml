@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="orderViewPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #c7ecee; -fx-background-radius: 35;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.dmscooltech.controller.ViewRepairFormController">
+<Pane fx:id="orderViewPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #c7ecee; -fx-background-radius: 35;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.pos.controller.ViewRepairFormController">
    <children>
       <Pane layoutX="15.0" layoutY="15.0" prefHeight="568.0" prefWidth="766.0" style="-fx-background-color: white; -fx-background-radius: 35;" />
       <Text layoutX="24.0" layoutY="60.0" stroke="TRANSPARENT" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="2.0" text="Repair Deatils View" underline="true">
