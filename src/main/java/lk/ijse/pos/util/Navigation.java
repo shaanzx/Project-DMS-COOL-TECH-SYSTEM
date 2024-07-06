@@ -40,7 +40,7 @@ public class Navigation {
     }
     public static void switchPaging(Pane pane, String path) throws IOException {
         pane.getChildren().clear();
-        FXMLLoader fxmlLoader = new FXMLLoader(Navigation.class.getResource("/view/" + path));
+        FXMLLoader fxmlLoader = new FXMLLoader(Navigation.class.getResource("/lk.ijse.pos/view/" + path));
         Parent root = fxmlLoader.load();
         pane.getChildren().add(root);
     }

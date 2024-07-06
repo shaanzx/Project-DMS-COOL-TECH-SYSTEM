@@ -74,8 +74,12 @@ public class NewLoginFormController {
                     new Alert(Alert.AlertType.ERROR,"Incorrect Password!");
                 }
             }
-        } catch (IOException | SQLException | ClassNotFoundException e ) {
+        } catch (  SQLException  e ) {
             new Alert(Alert.AlertType.ERROR, "User id or password doesn't match.Try aging!").show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 

@@ -78,15 +78,10 @@ public class VehicleFormController implements Initializable {
     @FXML
     private Label vehicleTypeValidate;
 
-    String vehicleNo = txtVehicleNo.getText();
-    String vehicleModel = txtVehicleModel.getText();
-    String vehicleType = txtVehicleType.getText();
-    String customerId = cmbCusId.getSelectionModel().getSelectedItem().toString();
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadAllVehicles();
         setDate();
-        generateNextVehicleId();
         setCellValueFactory();
         getCMBCustomerId();
     }
@@ -128,9 +123,6 @@ public class VehicleFormController implements Initializable {
         }
     }
 
-    private void generateNextVehicleId() {
-    }
-
     private void setDate() {
         txtDate.setText(String.valueOf(LocalDate.now()));
     }
@@ -154,6 +146,8 @@ public class VehicleFormController implements Initializable {
 
     @FXML
     void btnVehicleDeleteOnAction(ActionEvent event) {
+        String vehicleNo = txtVehicleNo.getText();
+
         try {
             boolean isDeleted = vehicleBO.deleteVehicle(vehicleNo);
             if(isDeleted){
@@ -168,6 +162,10 @@ public class VehicleFormController implements Initializable {
 
     @FXML
     void btnVehicleSaveOnAction(ActionEvent event) {
+        String vehicleNo = txtVehicleNo.getText();
+        String vehicleModel = txtVehicleModel.getText();
+        String vehicleType = txtVehicleType.getText();
+        String customerId = cmbCusId.getSelectionModel().getSelectedItem().toString();
         try {
             boolean isSaved = vehicleBO.saveVehicle(new VehicleDTO(vehicleNo, vehicleModel, vehicleType, customerId));
             if (isSaved) {
@@ -181,6 +179,11 @@ public class VehicleFormController implements Initializable {
 
     @FXML
     void btnVehicleUpdateOnAction(ActionEvent event) {
+        String vehicleNo = txtVehicleNo.getText();
+        String vehicleModel = txtVehicleModel.getText();
+        String vehicleType = txtVehicleType.getText();
+        String customerId = cmbCusId.getSelectionModel().getSelectedItem().toString();
+
         try {
             boolean isUpdated = vehicleBO.updateVehicle(new VehicleDTO(vehicleNo, vehicleModel, vehicleType, customerId));
             if(isUpdated) {
@@ -195,6 +198,7 @@ public class VehicleFormController implements Initializable {
 
     @FXML
     void cmbCustomerIdOnAction(ActionEvent event) {
+        String customerId = cmbCusId.getSelectionModel().getSelectedItem().toString();
         try {
             CustomerDTO customerDTO = customerBO.searchCustomer(customerId);
             lblCustomerName.setText(customerDTO.getName());
@@ -212,12 +216,14 @@ public class VehicleFormController implements Initializable {
         txtVehicleNo.setText(columns.get(0).getCellData(row).toString());
         txtVehicleModel.setText(columns.get(1).getCellData(row).toString());
         txtVehicleType.setText(columns.get(2).getCellData(row).toString());
-        //cmbCusId.setValue(columns.get(3).getCellData(row).toString());
+        cmbCusId.setValue(columns.get(3).getCellData(row).toString());
 
     }
 
     @FXML
     void txtSearchVehicleOnAction(ActionEvent event) {
+        String vehicleNo = txtVehicleNo.getText();
+
         try {
             VehicleDTO vehicleDTO = vehicleBO.searchVehicle(vehicleNo);
             if(vehicleDTO != null){

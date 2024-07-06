@@ -80,16 +80,10 @@ public class EmployeeFormController  implements Initializable {
     @FXML
     private TextField txtEmpTel;
 
-    String empId = txtEmpId.getText();
-    String empName = txtEmpName.getText();
-    String empAddress = txtEmpAddress.getText();
-    String tel = txtEmpTel.getText();
-    String jobRole = txtEmpJobRole.getText();
-    String userId = new NewLoginFormController().uId;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        generateNextEmployeeId();
+        txtEmpId.setText(generateNextEmployeeId());
         setDate();
         setCellValueFactory();
         loadAllEmployee();
@@ -168,6 +162,8 @@ public class EmployeeFormController  implements Initializable {
 
     @FXML
     void btnEmpDeleteOnAction(ActionEvent event) {
+        String empId = txtEmpId.getText();
+
         try {
             boolean isDeleted = employeeBO.deleteEmployee(empId);
             if(isDeleted){
@@ -183,6 +179,13 @@ public class EmployeeFormController  implements Initializable {
 
     @FXML
     void btnEmpSaveOnAction(ActionEvent event) {
+        String empId = txtEmpId.getText();
+        String empName = txtEmpName.getText();
+        String empAddress = txtEmpAddress.getText();
+        String tel = txtEmpTel.getText();
+        String jobRole = txtEmpJobRole.getText();
+        String userId = new NewLoginFormController().uId;
+
         try {
             boolean isSaved = employeeBO.saveEmployee(new EmployeeDTO(empId, empName, empAddress, tel, jobRole, userId));
             if (isSaved) {
@@ -198,6 +201,12 @@ public class EmployeeFormController  implements Initializable {
 
     @FXML
     void btnEmpUpdateOnAction(ActionEvent event) {
+        String empId = txtEmpId.getText();
+        String empName = txtEmpName.getText();
+        String empAddress = txtEmpAddress.getText();
+        String tel = txtEmpTel.getText();
+        String jobRole = txtEmpJobRole.getText();
+        String userId = new NewLoginFormController().uId;
         try {
             boolean isUpdated = employeeBO.updateEmployee(new EmployeeDTO(empId, empName, empAddress, tel, jobRole, userId));
             if (isUpdated) {
@@ -226,6 +235,8 @@ public class EmployeeFormController  implements Initializable {
 
     @FXML
     void txtSearchEmployeeOnAction(ActionEvent event) {
+        String empId = txtEmpId.getText();
+
         try {
             EmployeeDTO employeeDTO = employeeBO.searchEmployee(empId);
             if (employeeDTO != null) {

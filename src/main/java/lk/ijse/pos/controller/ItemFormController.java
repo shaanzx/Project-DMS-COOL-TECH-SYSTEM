@@ -82,18 +82,11 @@ public class ItemFormController implements Initializable {
     @FXML
     private TextField txtVehicleModel;
 
-    String itemCode = txtItemCode.getText();
-    String description = txtItemName.getText();
-    String vehicleModel = txtVehicleModel.getText();
-    int qytOnHand = Integer.parseInt(txtQytOnHand.getText());
-    double unitPrice = Double.parseDouble(txtUnitPrice.getText());
-    String date = dpDate.getValue().toString();
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setDate();
         setCellValueFactory();
-        generateNextItemCode();
+        txtItemCode.setText(generateNextItemCode());
         loadAllItem();
     }
 
@@ -175,6 +168,13 @@ public class ItemFormController implements Initializable {
 
     @FXML
     void btnItemSaveOnAction(ActionEvent event) {
+        String itemCode = txtItemCode.getText();
+        String description = txtItemName.getText();
+        String vehicleModel = txtVehicleModel.getText();
+        int qytOnHand = Integer.parseInt(txtQytOnHand.getText());
+        double unitPrice = Double.parseDouble(txtUnitPrice.getText());
+        String date = dpDate.getValue().toString();
+
         try {
             boolean isSaved = itemBO.saveItem(new ItemDTO(itemCode, description, vehicleModel, qytOnHand, unitPrice, date));
             if(isSaved){
@@ -190,6 +190,13 @@ public class ItemFormController implements Initializable {
 
     @FXML
     void btnItemUpdateOnAction(ActionEvent event) {
+        String itemCode = txtItemCode.getText();
+        String description = txtItemName.getText();
+        String vehicleModel = txtVehicleModel.getText();
+        int qytOnHand = Integer.parseInt(txtQytOnHand.getText());
+        double unitPrice = Double.parseDouble(txtUnitPrice.getText());
+        String date = dpDate.getValue().toString();
+
         try {
             boolean isUpdated = itemBO.updateItem(new ItemDTO(itemCode, description, vehicleModel, qytOnHand, unitPrice, date));
             if(isUpdated){
@@ -205,6 +212,7 @@ public class ItemFormController implements Initializable {
 
     @FXML
     void btnItemDeleteOnAction(ActionEvent event) {
+        String itemCode  = txtItemCode.getText();
         try {
             boolean isDeleted = itemBO.deleteItem(itemCode);
             if(isDeleted){
@@ -236,6 +244,7 @@ public class ItemFormController implements Initializable {
 
     @FXML
     void txtSearchItemOnAction(ActionEvent event) {
+        String itemCode = txtItemCode.getText();
         try {
             ItemDTO itemDTO = itemBO.searchItem(itemCode);
             if (itemDTO != null) {

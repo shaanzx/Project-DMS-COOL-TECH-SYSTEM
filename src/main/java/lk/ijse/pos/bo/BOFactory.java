@@ -24,14 +24,14 @@ public class BOFactory {
                 return new ItemBOImpl();
             case PLACE_ORDER:
                 return new PlaceOrderBOImpl();
-                case PAYMENT:
-                    return new PaymentBOImpl();
+            case PAYMENT:
+                return new PaymentBOImpl();
             case VEHICLE:
-                new VehicleBOImpl();
+                return new VehicleBOImpl();
             case VIEW_ORDER:
-                new OrderBOImpl();
+                return new OrderBOImpl();
             case VIEW_REPAIR:
-                new RepairBOImpl();
+                return new OrderBOImpl();
             case USER:
                 return new UserBOImpl();
             default:

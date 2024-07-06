@@ -81,13 +81,6 @@ public class CustomerFormController implements Initializable {
     @FXML
     private TextField txtCusTel;
 
-    String cusId = txtCusId.getText();
-    String cusName = txtCusName.getText();
-    String cusAddress = txtCusAddress.getText();
-    String cusTel = txtCusTel.getText();
-    String cusEmail = txtCusEmail.getText();
-    String userId = new NewLoginFormController().uId;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         txtCusId.setText(generateNewCustomerId());
@@ -181,6 +174,8 @@ public class CustomerFormController implements Initializable {
 
     @FXML
     void btnCusDeleteOnAction(ActionEvent event) {
+        String cusId = txtCusId.getText();
+
         try {
             boolean isDeleted = customerBO.deleteCustomer(cusId);
             if(isDeleted){
@@ -202,6 +197,12 @@ public class CustomerFormController implements Initializable {
         String cusEmail = txtCusEmail.getText();
         String userId = new NewLoginFormController().uId;*/
 
+        String cusId = txtCusId.getText();
+        String cusName = txtCusName.getText();
+        String cusAddress = txtCusAddress.getText();
+        String cusTel = txtCusTel.getText();
+        String cusEmail = txtCusEmail.getText();
+        String userId = new NewLoginFormController().uId;
         try {
             boolean isSaved = customerBO.saveCustomer(new CustomerDTO(cusId, cusName, cusAddress, cusTel, cusEmail, userId));
             if(isSaved){
@@ -218,6 +219,13 @@ public class CustomerFormController implements Initializable {
 
     @FXML
     void btnCusUpdateOnAction(ActionEvent event) {
+        String cusId = txtCusId.getText();
+        String cusName = txtCusName.getText();
+        String cusAddress = txtCusAddress.getText();
+        String cusTel = txtCusTel.getText();
+        String cusEmail = txtCusEmail.getText();
+        String userId = new NewLoginFormController().uId;
+
         try {
             boolean isUpdated = customerBO.updateCustomer(new CustomerDTO(cusId, cusName, cusAddress, cusTel, cusEmail, userId));
             if(isUpdated){
@@ -251,6 +259,8 @@ public class CustomerFormController implements Initializable {
 
     @FXML
     void txtSearchCustomerOnAction(ActionEvent event) {
+        String cusId = txtCusId.getText();
+
         try {
             CustomerDTO customerDTO = customerBO.searchCustomer(cusId);
             if(customerDTO!=null){

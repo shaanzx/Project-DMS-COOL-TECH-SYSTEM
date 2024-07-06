@@ -14,9 +14,7 @@ public class  UserDAOImpl implements UserDAO {
 
     @Override
     public ResultSet checkUserNamePassword(String userName, String pw) throws SQLException, ClassNotFoundException {
-
     return SQLUtil.execute("SELECT uId, uName, uPassword FROM user WHERE uName = ?", userName);
-
 }
    /* public boolean checkUserNamePassword(String userName, String pw) throws SQLException, ClassNotFoundException {
         ResultSet resultSet =SQLUtil.execute("SELECT  uId ,uName, uPassword FROM user WHERE uName = ?",userName,pw);
