@@ -89,13 +89,15 @@ public class CustomerDAOImpl  implements CustomerDAO {
             String email = resultSet.getString(5);
             String userId = resultSet.getString(6);
             customer = new Customer(cusId, name, address, telephone, email, userId);
+
         }
         return customer;
+        
     }
 
     @Override
     public List<String> getCustomerId() throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = SQLUtil.execute("SELECT vNo FROM vehicle");
+        ResultSet resultSet = SQLUtil.execute("SELECT cId FROM customer");
 
         List<String> customerIdList = new ArrayList<>();
         while (resultSet.next()) {

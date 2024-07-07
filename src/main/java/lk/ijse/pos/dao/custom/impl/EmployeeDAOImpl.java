@@ -48,9 +48,9 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                 entity.getName(),
                 entity.getAddress(),
                 entity.getTel(),
-                entity.getTel(),
                 entity.getJobRole(),
-                entity.getUserId());
+                entity.getUserId(),
+                entity.getId());
     }
 
     @Override

@@ -167,7 +167,7 @@ public class EmployeeFormController  implements Initializable {
         try {
             boolean isDeleted = employeeBO.deleteEmployee(empId);
             if(isDeleted){
-                new Alert(Alert.AlertType.CONFIRMATION,"Deleted!");
+                new Alert(Alert.AlertType.CONFIRMATION,"Deleted!").show();
                 loadAllEmployee();
                 cleartextField();
                 generateNextEmployeeId();
