@@ -111,6 +111,7 @@ public class VehicleFormController implements Initializable {
         try {
             ArrayList<VehicleDTO> allVehicle = vehicleBO.getAllVehicle();
             for(VehicleDTO vehicleDTO : allVehicle) {
+                System.out.println(vehicleDTO);
                 tblVehicle.getItems().add(new VehicleTm(
                         vehicleDTO.getVehicleNo(),
                         vehicleDTO.getModel(),
@@ -151,7 +152,7 @@ public class VehicleFormController implements Initializable {
         try {
             boolean isDeleted = vehicleBO.deleteVehicle(vehicleNo);
             if(isDeleted){
-                new Alert(Alert.AlertType.CONFIRMATION,"Vehicle details deleted!");
+                new Alert(Alert.AlertType.CONFIRMATION,"Vehicle details deleted!").show();
                 loadAllVehicles();
                 clearTextField();
             }
@@ -169,7 +170,7 @@ public class VehicleFormController implements Initializable {
         try {
             boolean isSaved = vehicleBO.saveVehicle(new VehicleDTO(vehicleNo, vehicleModel, vehicleType, customerId));
             if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION,"Vehicle Details Saved!");
+                new Alert(Alert.AlertType.CONFIRMATION,"Vehicle Details Saved!").show();
                 loadAllVehicles();
             }
         } catch (SQLException | ClassNotFoundException e) {
@@ -187,7 +188,7 @@ public class VehicleFormController implements Initializable {
         try {
             boolean isUpdated = vehicleBO.updateVehicle(new VehicleDTO(vehicleNo, vehicleModel, vehicleType, customerId));
             if(isUpdated) {
-                new Alert(Alert.AlertType.CONFIRMATION,"Vehicle Details Updated!");
+                new Alert(Alert.AlertType.CONFIRMATION,"Vehicle Details Updated!").show();
                 loadAllVehicles();
                 clearTextField();
             }
