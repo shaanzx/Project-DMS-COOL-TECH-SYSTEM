@@ -202,7 +202,7 @@ public class CustomerFormController implements Initializable {
         String cusAddress = txtCusAddress.getText();
         String cusTel = txtCusTel.getText();
         String cusEmail = txtCusEmail.getText();
-        String userId = new NewLoginFormController().uId;
+        String userId = NewLoginFormController.getInstance().userId;
         try {
             boolean isSaved = customerBO.saveCustomer(new CustomerDTO(cusId, cusName, cusAddress, cusTel, cusEmail, userId));
             if(isSaved){
@@ -224,7 +224,7 @@ public class CustomerFormController implements Initializable {
         String cusAddress = txtCusAddress.getText();
         String cusTel = txtCusTel.getText();
         String cusEmail = txtCusEmail.getText();
-        String userId = new NewLoginFormController().uId;
+        String userId = NewLoginFormController.getInstance().userId;
 
         try {
             boolean isUpdated = customerBO.updateCustomer(new CustomerDTO(cusId, cusName, cusAddress, cusTel, cusEmail, userId));

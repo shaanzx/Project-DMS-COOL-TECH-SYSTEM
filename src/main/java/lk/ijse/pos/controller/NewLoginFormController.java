@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class NewLoginFormController {
+
     public AnchorPane mainpane;
 
     UserBO userBO = (UserBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.USER);
@@ -41,9 +42,17 @@ public class NewLoginFormController {
     @FXML
     private Label userIdValidate;
 
-    String uId;
-    String uName;
-    String uPassword;
+    public String userId;
+
+    private static NewLoginFormController controller;
+
+    public NewLoginFormController(){
+        controller = this;
+    }
+
+    public static NewLoginFormController getInstance(){
+        return controller;
+    }
 
     @FXML
     void btnForgetOnAction(ActionEvent event) {
@@ -63,9 +72,9 @@ public class NewLoginFormController {
         try {
             ResultSet resultSet = userBO.checkUserNamePassword(userName,password);
             while(resultSet.next()){
-                uId = resultSet.getString(1);
-                uName = resultSet.getString(2);
-                uPassword = resultSet.getString(3);
+                String uId = resultSet.getString(1);
+                String uName = resultSet.getString(2);
+                String uPassword = resultSet.getString(3);
 
                 if (password.equals(uPassword)) {
                     ancLogin.getScene().getWindow().hide();

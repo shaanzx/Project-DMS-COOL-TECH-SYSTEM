@@ -184,7 +184,7 @@ public class EmployeeFormController  implements Initializable {
         String empAddress = txtEmpAddress.getText();
         String tel = txtEmpTel.getText();
         String jobRole = txtEmpJobRole.getText();
-        String userId = new NewLoginFormController().uId;
+        String userId = NewLoginFormController.getInstance().userId;
 
         try {
             boolean isSaved = employeeBO.saveEmployee(new EmployeeDTO(empId, empName, empAddress, tel, jobRole, userId));
@@ -206,7 +206,7 @@ public class EmployeeFormController  implements Initializable {
         String empAddress = txtEmpAddress.getText();
         String tel = txtEmpTel.getText();
         String jobRole = txtEmpJobRole.getText();
-        String userId = new NewLoginFormController().uId;
+        String userId = NewLoginFormController.getInstance().userId;
         try {
             boolean isUpdated = employeeBO.updateEmployee(new EmployeeDTO(empId, empName, empAddress, tel, jobRole, userId));
             if (isUpdated) {

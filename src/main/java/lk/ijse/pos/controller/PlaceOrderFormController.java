@@ -397,7 +397,7 @@ public class PlaceOrderFormController implements Initializable {
             if(itemDTO!=null) {
                 lblItemName.setText(itemDTO.getDescription());
                 lblUnitPrice.setText(String.valueOf(itemDTO.getUnitPrice()));
-                lblUnitPrice.setText(String.valueOf(itemDTO.getQtyOnHand()));
+                lblQtyOnHand.setText(String.valueOf(itemDTO.getQtyOnHand()));
             }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
