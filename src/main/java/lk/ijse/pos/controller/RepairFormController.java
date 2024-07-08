@@ -17,10 +17,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import lk.ijse.pos.bo.BOFactory;
 import lk.ijse.pos.bo.custom.*;
+import lk.ijse.pos.dto.CustomerDTO;
 import lk.ijse.pos.dto.EmployeeDTO;
 import lk.ijse.pos.dto.ItemDTO;
 import lk.ijse.pos.dto.VehicleDTO;
+import lk.ijse.pos.util.Navigation;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,6 +37,7 @@ public class RepairFormController implements Initializable {
     VehicleBO vehicleBO = (VehicleBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.VEHICLE);
     ItemBO itemBO = (ItemBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.ITEM);
     EmployeeBO employeeBO = (EmployeeBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.EMPLOYEE);
+    CustomerBO customerBO = (CustomerBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.CUSTOMER);
     @FXML
     private JFXButton btnOrderPlace;
 
@@ -280,6 +284,11 @@ public class RepairFormController implements Initializable {
 
     @FXML
     void btnAddNewVehicleOnAction(ActionEvent event) {
+        try {
+            Navigation.switchPaging(pagingPane,"vehicle_form.fxml");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -295,7 +304,7 @@ public class RepairFormController implements Initializable {
 
     @FXML
     void btnViewRepairDetailsOnAction(ActionEvent event) {
-
+        Navigation.changeStage("/view/viewRepair_Form.fxml","View Repair Details Form");
     }
 
     @FXML
@@ -310,7 +319,16 @@ public class RepairFormController implements Initializable {
 
     @FXML
     void cmbVehicleNoOnAction(ActionEvent event) {
-
+        String vehicleNo = cmbVehicleNo.getValue();
+        try {
+            VehicleDTO vehicleDTO = vehicleBO.searchVehicle(vehicleNo);
+            CustomerDTO customerDTO = customerBO.searchCustomer(vehicleDTO.getCustomerId());
+            lblCustomerName.setText(customerDTO.getName());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
