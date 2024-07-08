@@ -96,6 +96,7 @@ public class PlaceOrderBOImpl implements PlaceOrderBO {
                         boolean isItemUpdated = itemDao.updateItemQty(itemDetailsArrayList);
                         System.out.println(isItemUpdated);
                         if (isItemUpdated) {
+                            System.out.println(orderPlacedto.getPaymentDTO());
                             boolean isPaymentSaved = paymentDAO.save(new Payment(
                                     orderPlacedto.getPaymentDTO().getPaymentId(),
                                     orderPlacedto.getPaymentDTO().getCustomerId(),
@@ -107,7 +108,6 @@ public class PlaceOrderBOImpl implements PlaceOrderBO {
                                     orderPlacedto.getPaymentDTO().getBalance()
                             ));
                             if (isPaymentSaved) {
-                                System.out.println(isPaymentSaved);
                                 connection.commit();
                                 return true;
                             }

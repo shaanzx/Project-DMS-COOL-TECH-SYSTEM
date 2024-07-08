@@ -217,7 +217,7 @@ public class PlaceOrderFormController implements Initializable {
     }
 
     private File getBill() throws JRException, SQLException {
-        JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/reports/order.jrxml");
+        JasperDesign jasperDesign = JRXmlLoader.load("lk.ijse.pos/reports/order.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
 
         JasperPrint jasperPrint = null;

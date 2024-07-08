@@ -7,11 +7,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.Cursor;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -21,14 +18,18 @@ import lk.ijse.pos.dto.CustomerDTO;
 import lk.ijse.pos.dto.EmployeeDTO;
 import lk.ijse.pos.dto.ItemDTO;
 import lk.ijse.pos.dto.VehicleDTO;
+import lk.ijse.pos.tm.AddToCartTm;
+import lk.ijse.pos.tm.RepairTm;
 import lk.ijse.pos.util.Navigation;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class RepairFormController implements Initializable {
@@ -120,7 +121,7 @@ public class RepairFormController implements Initializable {
     private Pane pagingPane;
 
     @FXML
-    private TableView<?> tblRepairDetails;
+    private TableView<RepairTm> tblRepairDetails;
 
     @FXML
     private TextField txtPayment;
@@ -282,6 +283,10 @@ public class RepairFormController implements Initializable {
         return nextRepairId;
     }
 
+    private void calculateNetAmount() {
+
+    }
+
     @FXML
     void btnAddNewVehicleOnAction(ActionEvent event) {
         try {
@@ -294,7 +299,71 @@ public class RepairFormController implements Initializable {
 
     @FXML
     void btnAddToCartOnAction(ActionEvent event) {
+        ObservableList<RepairTm> addToCartRepairList = FXCollections.observableArrayList();
 
+        String vehicleNo = cmbVehicleNo.getValue();
+        String description = txtRepairDescription.getText();
+        Date repairDate = Date.valueOf(dpRepairDate.getValue());
+/*        double repairCost = 0;
+        for(int i = 0; i < 10; i++){
+            if(i==0){
+                repairCost = Double.parseDouble(txtRepairCost.getText());
+            }else{
+                repairCost = 0;
+            }
+        }
+        double repairCost = 0;
+        for(int i = 0; i < tblRepairDetails.getItems().size(); i++) {
+            if(i == 0) {
+                repairCost = Double.parseDouble(txtRepairCost.getText());
+                System.out.println(repairCost);
+            } else if (i > 0) {
+                repairCost = 0;
+            }
+        }*/
+        double repairCost = Double.parseDouble(txtRepairCost.getText());
+        String itemCode = cmbItemCode.getValue();
+        int qty = Integer.parseInt(txtQty.getText());
+        double unitPrice = Double.parseDouble(lblUnitPrice.getText());
+        double totalAmount = repairCost+(qty*unitPrice);
+        JFXButton btnDelete = new JFXButton("Remove");
+        btnDelete.setCursor(Cursor.HAND);
+
+        btnDelete.setOnAction((e)->{
+            ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.OK_DONE);
+            ButtonType no = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+            Optional<ButtonType> type = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure to delete?", yes, no).showAndWait();
+            if(type.orElse(no) == yes){
+                int index = tblRepairDetails.getSelectionModel().getSelectedIndex();
+                addToCartRepairList.remove(index);
+                tblRepairDetails.refresh();
+                calculateNetAmount();
+            }
+        });
+        for (int i = 0; i < tblRepairDetails.getItems().size(); i++) {
+            /*if(i == 0){
+                totalAmount = repairCost+(qty*unitPrice);
+            } else if (i > 0) {
+                totalAmount = qty*unitPrice;
+            }*/
+            if (itemCode.equals(colItemCode.getCellData(i))) {
+                qty += addToCartRepairList.get(i).getQty();
+                totalAmount = unitPrice * qty;
+                addToCartRepairList.get(i).setQty(qty);
+                addToCartRepairList.get(i).setTotalAmount(totalAmount);
+                tblRepairDetails.refresh();
+                calculateNetAmount();
+                txtQty.clear();
+                cmbItemCode.requestFocus();
+                return;
+            }
+        }
+        RepairTm repair = new RepairTm(vehicleNo, description, repairDate,   repairCost, itemCode, qty, unitPrice, totalAmount, btnDelete);
+        addToCartRepairList.add(repair);
+        tblRepairDetails.setItems(addToCartRepairList);
+        txtQty.clear();
+        calculateNetAmount();
     }
 
     @FXML
@@ -379,7 +448,7 @@ public class RepairFormController implements Initializable {
 
     @FXML
     void txtQtyOnAction(ActionEvent event) {
-
+        btnAddToCartOnAction(event);
     }
 
 }
