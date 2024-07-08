@@ -309,12 +309,30 @@ public class RepairFormController implements Initializable {
 
     @FXML
     void cmbEmployeeIdOnAction(ActionEvent event) {
-
+        String employeeId = cmbEmployeeId.getValue();
+        try {
+            EmployeeDTO employeeDTO = employeeBO.searchEmployee(employeeId);
+            lblEmployeeName.setText(employeeDTO.getName());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
     void cmbItemCodeOnAction(ActionEvent event) {
-
+        String itemCode = cmbItemCode.getValue();
+        try {
+            ItemDTO itemDTO = itemBO.searchItem(itemCode);
+            lblItemName.setText(itemDTO.getDescription());
+            lblItemQtyOnHand.setText(String.valueOf(itemDTO.getQtyOnHand()));
+            lblUnitPrice.setText(String.valueOf(itemDTO.getUnitPrice()));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
@@ -333,7 +351,30 @@ public class RepairFormController implements Initializable {
 
     @FXML
     void keyCash(KeyEvent event) {
-
+        if (!txtPayment.getText().isEmpty()) {
+            double balance = Double.parseDouble(txtPayment.getText()) - Double.parseDouble(lblNetAmount.getText());
+            if (balance >= 0) {
+                txtPayment.setStyle("-fx-text-fill: black");
+                lblBalance.setText(String.valueOf(balance));
+                lblNeeded.setVisible(false);
+                lblMoreMoney.setText("");
+                btnOrderPlace.setDisable(false);
+                lblBalance.setVisible(true);
+            } else if (balance < 0) {
+                txtPayment.setStyle("-fx-text-fill: black");
+                btnOrderPlace.setDisable(true);
+                double positbalance = Math.abs(balance);
+                lblNeeded.setVisible(true);
+                lblMoreMoney.setText(positbalance + "/=");
+                lblBalance.setVisible(false);
+            }
+        } else {
+            btnOrderPlace.setDisable(true);
+            txtPayment.setStyle("-fx-text-fill: red");
+            lblBalance.setVisible(false);
+            lblNeeded.setVisible(false);
+            lblMoreMoney.setText("");
+        }
     }
 
     @FXML
