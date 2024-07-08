@@ -10,14 +10,20 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import lk.ijse.pos.bo.BOFactory;
+import lk.ijse.pos.bo.custom.RepairBO;
 
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class RepairFormController implements Initializable {
+    RepairBO repairBO = (RepairBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.REPAIR);
     @FXML
     private JFXButton btnOrderPlace;
 
@@ -116,7 +122,7 @@ public class RepairFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        generateNextRepairId();
+        lblRepairId.setText(generateNextRepairId());
         generateNextOrderId();
         getVehicleNo();
         getEmployeeId();
@@ -128,7 +134,15 @@ public class RepairFormController implements Initializable {
     }
 
     private void setCellValueFactory() {
-
+        colVehicleNo.setCellValueFactory(new PropertyValueFactory<>("vehicleNo"));
+        colRepairDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        colRepairDate.setCellValueFactory(new PropertyValueFactory<>("repairDate"));
+        colRepairCost.setCellValueFactory(new PropertyValueFactory<>("repairCost"));
+        colItemCode.setCellValueFactory(new PropertyValueFactory<>("itemCode"));
+        colIetmQty.setCellValueFactory(new PropertyValueFactory<>("qty"));
+        colItemUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+        colTotalPrice.setCellValueFactory(new PropertyValueFactory<>("totalAmount"));
+        colRemove.setCellValueFactory(new PropertyValueFactory<>("deleteButton"));
     }
 
     private void setDate() {
@@ -151,8 +165,40 @@ public class RepairFormController implements Initializable {
 
     }
 
-    private void generateNextRepairId() {
+    private String generateNextRepairId() {
+        try {
+            ResultSet resultSet = repairBO.generateRepairId();
+            String currentRepairId = null;
+            if(resultSet.next()){
+                currentRepairId = resultSet.getString(1);
+                return nextRepairId(currentRepairId);
+            }
+            return nextRepairId(null);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    private String nextRepairId(String currentRepairId) {
+        String nextRepairId=null;
+        if (currentRepairId==null){
+            nextRepairId="R001";
+        }else {
+            String data = currentRepairId.replace("R", "");
+            int num = Integer.parseInt(data);
+            num++;
+
+            if (num >= 1 && num <= 9) {
+                nextRepairId = "R00" + num;
+            } else if (num >= 10 && num <= 99) {
+                nextRepairId = "R0" + num;
+            } else if (num >= 100 && num <= 999) {
+                nextRepairId = "R" + num;
+            }
+        }
+        return nextRepairId;
     }
 
     @FXML

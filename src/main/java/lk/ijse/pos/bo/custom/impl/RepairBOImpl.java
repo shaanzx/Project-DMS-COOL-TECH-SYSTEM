@@ -19,32 +19,32 @@ public class RepairBOImpl implements RepairBO {
     }
 
     @Override
-    public ResultSet generateId() throws SQLException, ClassNotFoundException {
+    public ResultSet generateRepairId() throws SQLException, ClassNotFoundException {
         return repairDAO.generateId();
     }
 
     @Override
-    public ArrayList<RepairDTO> getAll() throws SQLException, ClassNotFoundException {
+    public ArrayList<RepairDTO> getAllRepair() throws SQLException, ClassNotFoundException {
         return null;
     }
 
     @Override
-    public boolean save(RepairDTO dto) throws SQLException, ClassNotFoundException {
+    public boolean saveRepair(RepairDTO dto) throws SQLException, ClassNotFoundException {
         return false;
     }
 
     @Override
-    public boolean update(RepairDTO dto) throws SQLException, ClassNotFoundException {
+    public boolean updateRepair(RepairDTO dto) throws SQLException, ClassNotFoundException {
         return false;
     }
 
     @Override
-    public boolean delete(String id) throws SQLException, ClassNotFoundException {
+    public boolean deleteRepair(String id) throws SQLException, ClassNotFoundException {
         return false;
     }
 
     @Override
-    public RepairDTO search(String id) throws SQLException, ClassNotFoundException {
+    public RepairDTO searchRepair(String id) throws SQLException, ClassNotFoundException {
         return null;
     }
 }

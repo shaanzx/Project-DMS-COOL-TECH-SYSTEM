@@ -13,15 +13,15 @@ public interface RepairBO extends SuperBO {
 
     int countRepairId() throws SQLException;
 
-    ResultSet generateId() throws SQLException, ClassNotFoundException;
+    ResultSet generateRepairId() throws SQLException, ClassNotFoundException;
 
-    ArrayList<RepairDTO> getAll() throws SQLException, ClassNotFoundException;
+    ArrayList<RepairDTO> getAllRepair() throws SQLException, ClassNotFoundException;
 
-    boolean save(RepairDTO dto) throws SQLException, ClassNotFoundException;
+    boolean saveRepair(RepairDTO dto) throws SQLException, ClassNotFoundException;
 
-    boolean update(RepairDTO dto) throws SQLException, ClassNotFoundException;
+    boolean updateRepair(RepairDTO dto) throws SQLException, ClassNotFoundException;
 
-    boolean delete(String id) throws SQLException, ClassNotFoundException;
+    boolean deleteRepair(String id) throws SQLException, ClassNotFoundException;
 
-    RepairDTO search(String id) throws SQLException, ClassNotFoundException;
+    RepairDTO searchRepair(String id) throws SQLException, ClassNotFoundException;
 }
