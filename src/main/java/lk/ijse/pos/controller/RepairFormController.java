@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -12,8 +13,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 
-public class RepairFormController {
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.ResourceBundle;
 
+public class RepairFormController implements Initializable {
     @FXML
     private JFXButton btnOrderPlace;
 
@@ -109,6 +113,47 @@ public class RepairFormController {
 
     @FXML
     private TextField txtRepairDescription;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        generateNextRepairId();
+        generateNextOrderId();
+        getVehicleNo();
+        getEmployeeId();
+        getItemCode();
+        setDate();
+        setCellValueFactory();
+        lblNeeded.setVisible(false);
+        btnOrderPlace.setDisable(true);
+    }
+
+    private void setCellValueFactory() {
+
+    }
+
+    private void setDate() {
+        lblDate.setText(String.valueOf(LocalDate.now()));
+    }
+
+    private void getItemCode() {
+
+    }
+
+    private void getEmployeeId() {
+
+    }
+
+    private void getVehicleNo() {
+
+    }
+
+    private void generateNextOrderId() {
+
+    }
+
+    private void generateNextRepairId() {
+
+    }
 
     @FXML
     void btnAddNewVehicleOnAction(ActionEvent event) {

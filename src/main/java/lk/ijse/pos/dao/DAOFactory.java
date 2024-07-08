@@ -35,6 +35,8 @@ public class DAOFactory {
                return new OrderDetailsDAOImpl();
             case PAYMENT:
                 return new PaymentDAOImpl();
+            case REPAIR:
+                return new RepairDAOImpl();
            case VEHICLE:
                return new VehicleDAOImpl();
            case USER:

@@ -26,6 +26,8 @@ public class BOFactory {
                 return new PlaceOrderBOImpl();
             case PAYMENT:
                 return new PaymentBOImpl();
+            case REPAIR:
+                return new RepairBOImpl();
             case VEHICLE:
                 return new VehicleBOImpl();
             case VIEW_ORDER:
