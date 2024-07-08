@@ -2,6 +2,8 @@ package lk.ijse.pos.controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,27 +16,35 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import lk.ijse.pos.bo.BOFactory;
-import lk.ijse.pos.bo.custom.RepairBO;
+import lk.ijse.pos.bo.custom.*;
+import lk.ijse.pos.dto.EmployeeDTO;
+import lk.ijse.pos.dto.ItemDTO;
+import lk.ijse.pos.dto.VehicleDTO;
 
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class RepairFormController implements Initializable {
     RepairBO repairBO = (RepairBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.REPAIR);
+    PlaceOrderBO placeOrderBO = (PlaceOrderBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.PLACE_ORDER);
+    VehicleBO vehicleBO = (VehicleBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.VEHICLE);
+    ItemBO itemBO = (ItemBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.ITEM);
+    EmployeeBO employeeBO = (EmployeeBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.EMPLOYEE);
     @FXML
     private JFXButton btnOrderPlace;
 
     @FXML
-    private JFXComboBox<?> cmbEmployeeId;
+    private JFXComboBox<String> cmbEmployeeId;
 
     @FXML
-    private JFXComboBox<?> cmbItemCode;
+    private JFXComboBox<String> cmbItemCode;
 
     @FXML
-    private JFXComboBox<?> cmbVehicleNo;
+    private JFXComboBox<String> cmbVehicleNo;
 
     @FXML
     private TableColumn<?, ?> colIetmQty;
@@ -123,7 +133,7 @@ public class RepairFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         lblRepairId.setText(generateNextRepairId());
-        generateNextOrderId();
+        lblOrderId.setText(generateNextOrderId());
         getVehicleNo();
         getEmployeeId();
         getItemCode();
@@ -150,19 +160,86 @@ public class RepairFormController implements Initializable {
     }
 
     private void getItemCode() {
+        ObservableList<String> itemCodeList = FXCollections.observableArrayList();
 
+        try {
+            ArrayList<ItemDTO> allItems = itemBO.getAllItems();
+            for(ItemDTO itemDTO : allItems){
+                itemCodeList.add(itemDTO.getCode());
+            }
+            cmbItemCode.setItems(itemCodeList);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void getEmployeeId() {
-
+        ObservableList<String> employeeIds = FXCollections.observableArrayList();
+        try {
+            ArrayList<EmployeeDTO> allEmployee = employeeBO.getAllEmployee();
+            for(EmployeeDTO employeeDTO : allEmployee){
+                employeeIds.add(employeeDTO.getId());
+            }
+            cmbEmployeeId.setItems(employeeIds);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void getVehicleNo() {
+        ObservableList<String> vehicleList = FXCollections.observableArrayList();
 
+        try {
+            ArrayList<VehicleDTO> allVehicle = vehicleBO.getAllVehicle();
+            for(VehicleDTO vehicleDTO : allVehicle ){
+               vehicleList.add(vehicleDTO.getVehicleNo());
+            }
+            cmbVehicleNo.setItems(vehicleList);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void generateNextOrderId() {
+    private String generateNextOrderId() {
+        try {
+            ResultSet resultSet = placeOrderBO.generateNextOrderId();
+            String currentOrderId = null;
+            if(resultSet.next()){
+                currentOrderId = resultSet.getString(1);
+                return nextOrderId(currentOrderId);
+            }
+            return nextOrderId(currentOrderId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    private String nextOrderId(String currentOrderId) {
+        String nextOrderId=null;
+        if (currentOrderId==null){
+            nextOrderId="OR001";
+        }else {
+            String data = currentOrderId.replace("OR", "");
+            int num = Integer.parseInt(data);
+            num++;
+
+            if (num >= 1 && num <= 9) {
+                nextOrderId = "OR00" + num;
+            } else if (num >= 10 && num <= 99) {
+                nextOrderId = "OR0" + num;
+            } else if (num >= 100 && num <= 999) {
+                nextOrderId = "OR" + num;
+            }
+        }
+        return nextOrderId;
     }
 
     private String generateNextRepairId() {
