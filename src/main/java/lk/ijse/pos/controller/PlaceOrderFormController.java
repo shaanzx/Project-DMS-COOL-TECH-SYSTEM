@@ -24,6 +24,7 @@ import lk.ijse.pos.dto.*;
 import lk.ijse.pos.tm.AddToCartTm;
 import lk.ijse.pos.util.Mail;
 import lk.ijse.pos.util.Navigation;
+
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
@@ -216,16 +217,15 @@ public class PlaceOrderFormController implements Initializable {
         lblNetAmount.setText(String.valueOf(netAmount));
     }
 
-    private File getBill() throws JRException, SQLException {
-        JasperDesign jasperDesign = JRXmlLoader.load("lk.ijse.pos/reports/order.jrxml");
+    private File getBill() throws JRException, SQLException, ClassNotFoundException {
+        System.out.println("awa");
+        JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/lk.ijse.pos/reports/order.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
 
         JasperPrint jasperPrint = null;
-        try {
+
             jasperPrint = JasperFillManager.fillReport(jasperReport, null, DBConnection.getDbConnection().getConnection());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+
         // Export the report to a PDF file
         File pdfFile = new File("Order Receipt.pdf");
         JasperExportManager.exportReportToPdfFile(jasperPrint, pdfFile.getAbsolutePath());
@@ -299,7 +299,7 @@ public class PlaceOrderFormController implements Initializable {
             throw new RuntimeException(e);
         }
         String cusEmail = customerDTO.getEmail();
-
+        System.out.println(cusEmail);
         List<OrderDetailsDTO> orderList = new ArrayList<>();
         double netAmount = 0;
         double orderAmount = 0;
@@ -340,7 +340,6 @@ public class PlaceOrderFormController implements Initializable {
                 throw new RuntimeException(e);
             }
             if (isOrderPlaced) {
-                //new Alert(Alert.AlertType.CONFIRMATION, "Order Placed Successfully").show();
                 ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.OK_DONE);
                 ButtonType no = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
                 Optional<ButtonType> result = new Alert(Alert.AlertType.CONFIRMATION, "Order Completed.Do you want to generate a bill?", yes, no).showAndWait();
@@ -349,10 +348,12 @@ public class PlaceOrderFormController implements Initializable {
                     Map<String, Object> parameters = new HashMap<>();
                     parameters.put("param1",printcash);
                     parameters.put("param2",balance);
-                    InputStream resource = this.getClass().getResourceAsStream("/reports/order.jrxml");
+                    InputStream resource = this.getClass().getResourceAsStream("src/main/resources/lk/ijse/pos/reports/order.jrxml");
                     try {
                         Mail.setMail("Order Completed", "Order Completed", "Thank you for your order. Your order is successfully placed. Your order id is "+orderId+".", cusEmail, getBill());
                     } catch (MessagingException | IOException | JRException e) {
+                        throw new RuntimeException(e);
+                    } catch (ClassNotFoundException e) {
                         throw new RuntimeException(e);
                     }
                     try{

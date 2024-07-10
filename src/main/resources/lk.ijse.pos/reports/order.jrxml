@@ -169,30 +169,10 @@ ORDER BY orderdetails.oId desc;]]>
 				</textElement>
 				<text><![CDATA[Total Price]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="400" y="30" width="80" height="30" uuid="47409d39-f81a-403a-b74a-40aae7b53030">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e7e8b267-d461-40c0-855e-dfacdc23a3e5"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Cash]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="480" y="30" width="80" height="30" uuid="d409c380-b96f-4d0c-b440-2f8a68b10172">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a4171f21-0676-4d0e-9fd5-251087d1c45a"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Balance]]></text>
-			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="30" splitType="Stretch">
+		<band height="36" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="0" width="80" height="30" uuid="cc90296a-2f7b-47ef-ab2c-4952bffcd3e6">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d69b9ea5-219d-471a-83ba-8a1da079fa4a"/>
@@ -229,7 +209,7 @@ ORDER BY orderdetails.oId desc;]]>
 				<textFieldExpression><![CDATA[$F{value}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="400" y="0" width="80" height="30" uuid="3d28a37b-a608-4f12-b359-3ac364fc90b1">
+				<reportElement x="400" y="1" width="80" height="31" uuid="3d28a37b-a608-4f12-b359-3ac364fc90b1">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e7e8b267-d461-40c0-855e-dfacdc23a3e5"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -237,20 +217,40 @@ ORDER BY orderdetails.oId desc;]]>
 				<textFieldExpression><![CDATA[$F{customerPayment}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="480" y="0" width="80" height="30" uuid="0ee35d68-32d6-4975-b60d-a437b94a7333">
+				<reportElement x="480" y="2" width="80" height="28" uuid="0ee35d68-32d6-4975-b60d-a437b94a7333">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a4171f21-0676-4d0e-9fd5-251087d1c45a"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{customerBalance}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="400" y="-31" width="80" height="31" uuid="47409d39-f81a-403a-b74a-40aae7b53030">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e7e8b267-d461-40c0-855e-dfacdc23a3e5"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cash]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="-30" width="80" height="30" uuid="d409c380-b96f-4d0c-b440-2f8a68b10172">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a4171f21-0676-4d0e-9fd5-251087d1c45a"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Balance]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="1" splitType="Stretch"/>
+		<band height="45" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="12" splitType="Stretch"/>
+		<band height="53" splitType="Stretch"/>
 	</pageFooter>
 	<summary>
 		<band height="42" splitType="Stretch">
