@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface ItemBO extends SuperBO {
-    ObservableList<XYChart.Series<String, Integer>> getDataToBarChart() throws SQLException;
+    ObservableList<XYChart.Series<String, Integer>> getDataToBarChart() throws SQLException, ClassNotFoundException;
 
     ResultSet generateIdItemCode() throws SQLException, ClassNotFoundException;
 

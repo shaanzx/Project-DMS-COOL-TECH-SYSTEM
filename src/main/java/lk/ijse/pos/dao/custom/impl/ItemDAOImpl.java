@@ -1,6 +1,8 @@
 package lk.ijse.pos.dao.custom.impl;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import lk.ijse.pos.bo.custom.ItemBO;
 import lk.ijse.pos.dao.SQLUtil;
@@ -15,8 +17,31 @@ import java.util.List;
 
 public class ItemDAOImpl  implements ItemDAO {
     @Override
-    public ObservableList<XYChart.Series<String, Integer>> getDataToBarChart() throws SQLException {
-        return null;
+    public ObservableList<XYChart.Series<String, Integer>> getDataToBarChart() throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = SQLUtil.execute("SELECT iName,qtyOnHand FROM item");
+        ObservableList<XYChart.Series<String, Integer>> datalist = FXCollections.observableArrayList();
+        XYChart.Series<String, Integer> series = new XYChart.Series<>();
+
+        while(resultSet.next()){
+            String itemName = resultSet.getString("iName");
+            int itemQty = resultSet.getInt("qtyOnHand");
+            series.getData().add(new XYChart.Data<>(itemName, itemQty));
+        }
+        datalist.add(series);
+        return datalist;
+    }
+
+    @Override
+    public ArrayList<PieChart.Data> getPieChartData() throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = SQLUtil.execute("select iCode,SUM(qty)as orderCount from orderdetails group by iCode order by ordercount desc limit 5");
+        ArrayList<PieChart.Data> data = new ArrayList<>();
+        while (resultSet.next()) {
+            Item item = search(resultSet.getString(1));
+            data.add(
+                    new PieChart.Data(item.getDescription(),resultSet.getInt(2))
+            );
+        }
+        return data;
     }
 
     @Override

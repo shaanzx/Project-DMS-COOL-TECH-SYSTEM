@@ -18,8 +18,8 @@ public class ItemBOImpl implements ItemBO {
 
     ItemDAO itemDAO = (ItemDAO) DAOFactory.getDaoFactory().getDaoType(DAOFactory.DAOType.ITEM);
     @Override
-    public ObservableList<XYChart.Series<String, Integer>> getDataToBarChart() throws SQLException {
-        return null;
+    public ObservableList<XYChart.Series<String, Integer>> getDataToBarChart() throws SQLException, ClassNotFoundException {
+        return itemDAO.getDataToBarChart();
     }
 
     @Override
