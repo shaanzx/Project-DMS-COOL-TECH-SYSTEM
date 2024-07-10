@@ -325,7 +325,7 @@ public class PlaceOrderFormController implements Initializable {
 
         String paymentId = null;
         try {
-            paymentId = paymentBO.generateId();
+            paymentId = paymentBO.generatePaymentId();
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }

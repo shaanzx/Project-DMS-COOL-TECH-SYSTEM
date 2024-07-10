@@ -3,6 +3,7 @@ package lk.ijse.pos.bo.custom;
 import lk.ijse.pos.bo.SuperBO;
 import lk.ijse.pos.dao.SQLUtil;
 import lk.ijse.pos.dto.RepairDTO;
+import lk.ijse.pos.dto.RepairDetailsDTO;
 import lk.ijse.pos.entity.Repair;
 
 import java.sql.ResultSet;
@@ -24,4 +25,6 @@ public interface RepairBO extends SuperBO {
     boolean deleteRepair(String id) throws SQLException, ClassNotFoundException;
 
     RepairDTO searchRepair(String id) throws SQLException, ClassNotFoundException;
+
+    boolean addNewRepair(RepairDetailsDTO repairDetails) throws SQLException, ClassNotFoundException;
 }

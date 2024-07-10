@@ -13,7 +13,7 @@ public class PaymentBOImpl implements PaymentBO {
     PaymentDAOImpl paymentDAO = (PaymentDAOImpl) DAOFactory.getDaoFactory().getDaoType(DAOFactory.DAOType.PAYMENT);
 
     @Override
-    public String generateId() throws SQLException, ClassNotFoundException {
+    public String generatePaymentId() throws SQLException, ClassNotFoundException {
         ResultSet resultSet = paymentDAO.generateId();
         String currentPaymentId = null;
 
@@ -45,27 +45,27 @@ public class PaymentBOImpl implements PaymentBO {
     }
 
     @Override
-    public ArrayList<PaymentDTO> getAll() throws SQLException, ClassNotFoundException {
+    public ArrayList<PaymentDTO> getAllPayment() throws SQLException, ClassNotFoundException {
         return null;
     }
 
     @Override
-    public boolean save(PaymentDTO dto) throws SQLException, ClassNotFoundException {
+    public boolean savePayment(PaymentDTO dto) throws SQLException, ClassNotFoundException {
         return false;
     }
 
     @Override
-    public boolean update(PaymentDTO dto) throws SQLException, ClassNotFoundException {
+    public boolean updatePayment(PaymentDTO dto) throws SQLException, ClassNotFoundException {
         return false;
     }
 
     @Override
-    public boolean delete(String id) throws SQLException, ClassNotFoundException {
+    public boolean deletePayment(String id) throws SQLException, ClassNotFoundException {
         return false;
     }
 
     @Override
-    public PaymentDTO search(String id) throws SQLException, ClassNotFoundException {
+    public PaymentDTO searchPayment(String id) throws SQLException, ClassNotFoundException {
         return null;
     }
 }

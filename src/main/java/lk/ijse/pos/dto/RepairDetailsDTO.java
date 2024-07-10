@@ -13,8 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 public class RepairDetailsDTO {
-    private Order order;
-    private List<OrderDetails> orderDetails;
+    private OrderDTO order;
+    private List<OrderDetailsDTO> orderDetails;
     private RepairDTO repair;
-    private Payment payment;
+    private PaymentDTO payment;
 }

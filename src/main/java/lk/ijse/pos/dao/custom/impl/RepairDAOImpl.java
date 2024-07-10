@@ -26,7 +26,15 @@ public class RepairDAOImpl implements RepairDAO {
 
     @Override
     public boolean save(Repair entity) throws SQLException, ClassNotFoundException {
-        return false;
+        return SQLUtil.execute("INSERT INTO repair VALUES(?,?,?,?,?,?,?,?)",
+                entity.getRepairId(),
+                entity.getVehicleNo(),
+                entity.getDescription(),
+                entity.getRepairDate(),
+                entity.getRepairCost(),
+                entity.getEmployeeId(),
+                entity.getItemCode(),
+                entity.getTotalAmount());
     }
 
     @Override

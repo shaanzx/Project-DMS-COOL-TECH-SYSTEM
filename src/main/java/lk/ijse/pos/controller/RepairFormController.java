@@ -14,13 +14,16 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import lk.ijse.pos.bo.BOFactory;
 import lk.ijse.pos.bo.custom.*;
-import lk.ijse.pos.dto.CustomerDTO;
-import lk.ijse.pos.dto.EmployeeDTO;
-import lk.ijse.pos.dto.ItemDTO;
-import lk.ijse.pos.dto.VehicleDTO;
+import lk.ijse.pos.db.DBConnection;
+import lk.ijse.pos.dto.*;
+import lk.ijse.pos.entity.OrderDetails;
 import lk.ijse.pos.tm.AddToCartTm;
 import lk.ijse.pos.tm.RepairTm;
 import lk.ijse.pos.util.Navigation;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,9 +31,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class RepairFormController implements Initializable {
     RepairBO repairBO = (RepairBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.REPAIR);
@@ -39,6 +40,7 @@ public class RepairFormController implements Initializable {
     ItemBO itemBO = (ItemBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.ITEM);
     EmployeeBO employeeBO = (EmployeeBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.EMPLOYEE);
     CustomerBO customerBO = (CustomerBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.CUSTOMER);
+    PaymentBO paymentBO = (PaymentBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.PAYMENT);
     @FXML
     private JFXButton btnOrderPlace;
 
@@ -134,6 +136,8 @@ public class RepairFormController implements Initializable {
 
     @FXML
     private TextField txtRepairDescription;
+
+    private ObservableList<RepairTm> addToCartRepairList = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -284,7 +288,11 @@ public class RepairFormController implements Initializable {
     }
 
     private void calculateNetAmount() {
-
+        double netAmount = 0;
+        for(int i = 0; i < tblRepairDetails.getItems().size(); i++){
+            netAmount += (double) colTotalPrice.getCellData(i);
+        }
+        lblNetAmount.setText(String.valueOf(netAmount));
     }
 
     @FXML
@@ -299,7 +307,6 @@ public class RepairFormController implements Initializable {
 
     @FXML
     void btnAddToCartOnAction(ActionEvent event) {
-        ObservableList<RepairTm> addToCartRepairList = FXCollections.observableArrayList();
 
         String vehicleNo = cmbVehicleNo.getValue();
         String description = txtRepairDescription.getText();
@@ -368,7 +375,111 @@ public class RepairFormController implements Initializable {
 
     @FXML
     void btnConfirmRepairBillOnAction(ActionEvent event) {
+        String orderId = lblOrderId.getText();
+        VehicleDTO vehicleDTO = null;
+        try {
+            vehicleDTO = vehicleBO.searchVehicle(cmbVehicleNo.getValue());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        Date date = Date.valueOf(lblDate.getText());
 
+        OrderDTO order = new OrderDTO(orderId,vehicleDTO.getCustomerId(), date);
+
+        List<OrderDetailsDTO> orderList = new ArrayList<>();
+        double netAmount = 0;
+        double orderAmount = 0;
+
+        for(int i=0; i < tblRepairDetails.getItems().size(); i++){
+            RepairTm repairTm = addToCartRepairList.get(i);
+
+            OrderDetailsDTO orderDetails = new OrderDetailsDTO(
+                    orderId,
+                    repairTm.getItemCode(),
+                    date,
+                    repairTm.getQty(),
+                    repairTm.getUnitPrice(),
+                    orderAmount += repairTm.getQty() * repairTm.getUnitPrice()
+            );
+            orderList.add(orderDetails);
+            netAmount += repairTm.getTotalAmount();
+        }
+
+
+        RepairDTO repair = new RepairDTO(
+                lblRepairId.getText(),
+                vehicleDTO.getVehicleNo(),
+                txtRepairDescription.getText(),
+                Date.valueOf(dpRepairDate.getValue()),
+                Double.valueOf(txtRepairCost.getText()),
+                cmbEmployeeId.getValue(),
+                cmbItemCode.getValue(),
+                netAmount
+        );
+
+        double customerPayment= Double.parseDouble(txtPayment.getText());
+        double balance =  Double.parseDouble(lblBalance.getText());
+
+        PaymentDTO  payment = null;
+        try {
+            payment = new PaymentDTO(
+                    paymentBO.generatePaymentId(),
+                    vehicleDTO.getCustomerId(),
+                    orderId,
+                    lblRepairId.getText(),
+                    netAmount,
+                    Date.valueOf(lblDate.getText()),
+                    customerPayment,
+                    balance
+            );
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        RepairDetailsDTO repairDetails = new RepairDetailsDTO(order, orderList, repair,payment);
+
+        try {
+            boolean isRepairDone = repairBO.addNewRepair(repairDetails);
+            if (isRepairDone) {
+                //new Alert(Alert.AlertType.CONFIRMATION, "Repair Process Done").show();
+                ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.OK_DONE);
+                ButtonType no = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+                Optional<ButtonType> type = new Alert(Alert.AlertType.CONFIRMATION, "Repair Process Done.Do You want To Bill?", yes, no).showAndWait();
+                if(type.orElse(no) == yes) {
+                    try {
+                        JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/reports/Payment.jrxml");
+                        JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("RepairId", lblRepairId.getText());
+
+                        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, data, DBConnection.getDbConnection().getConnection());
+                        JasperViewer.viewReport(jasperPrint, false);
+
+                    } catch (JRException | SQLException e) {
+                        new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+                        e.printStackTrace();
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Error generating receipt");
+                        alert.setContentText("An error occurred while generating the receipt. Check the logs for more details.");
+                        alert.showAndWait();
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Something went wrong").show();
+            }
+        }catch (SQLException e){
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML

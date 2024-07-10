@@ -68,7 +68,6 @@ public class PlaceOrderBOImpl implements PlaceOrderBO {
                     orderPlacedto.getOrderDTO().getDate()
             ));
             if(isOdSaved) {
-                System.out.println(isOdSaved);
                 ArrayList<OrderDetails> orderDetailsArrayList = new ArrayList<>();
                 for (OrderDetailsDTO od : orderPlacedto.getOrderDetailsDTO()) {
                     OrderDetails orderDetails = new OrderDetails(
@@ -82,7 +81,6 @@ public class PlaceOrderBOImpl implements PlaceOrderBO {
                 }
                 boolean isOdDetailsSaved = orderDetailsDao.save(orderDetailsArrayList);
                 if (isOdDetailsSaved) {
-                    System.out.println(isOdDetailsSaved);
                     ArrayList<OrderDetails> itemDetailsArrayList = new ArrayList<>();
                     for (OrderDetailsDTO od : orderPlacedto.getOrderDetailsDTO()) {
                         OrderDetails orderDetails = new OrderDetails(
@@ -94,9 +92,7 @@ public class PlaceOrderBOImpl implements PlaceOrderBO {
                                 od.getOrderAmount());
                         itemDetailsArrayList.add(orderDetails);
                         boolean isItemUpdated = itemDao.updateItemQty(itemDetailsArrayList);
-                        System.out.println(isItemUpdated);
                         if (isItemUpdated) {
-                            System.out.println(orderPlacedto.getPaymentDTO());
                             boolean isPaymentSaved = paymentDAO.save(new Payment(
                                     orderPlacedto.getPaymentDTO().getPaymentId(),
                                     orderPlacedto.getPaymentDTO().getCustomerId(),
