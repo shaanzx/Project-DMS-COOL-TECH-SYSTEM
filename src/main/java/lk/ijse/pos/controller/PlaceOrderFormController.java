@@ -218,7 +218,6 @@ public class PlaceOrderFormController implements Initializable {
     }
 
     private File getBill() throws JRException, SQLException, ClassNotFoundException {
-        System.out.println("awa");
         JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/lk.ijse.pos/reports/order.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
 
@@ -348,7 +347,7 @@ public class PlaceOrderFormController implements Initializable {
                     Map<String, Object> parameters = new HashMap<>();
                     parameters.put("param1",printcash);
                     parameters.put("param2",balance);
-                    InputStream resource = this.getClass().getResourceAsStream("src/main/resources/lk/ijse/pos/reports/order.jrxml");
+                    InputStream resource = this.getClass().getResourceAsStream("lorder.jrxml");
                     try {
                         Mail.setMail("Order Completed", "Order Completed", "Thank you for your order. Your order is successfully placed. Your order id is "+orderId+".", cusEmail, getBill());
                     } catch (MessagingException | IOException | JRException e) {
@@ -358,10 +357,10 @@ public class PlaceOrderFormController implements Initializable {
                     }
                     try{
                         JasperReport jasperReport = JasperCompileManager.compileReport(resource);
-                        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,parameters, DBConnection.getDbConnection().getConnection());
+                        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,parameters,DBConnection.getDbConnection().getConnection());;
                         JasperViewer.viewReport(jasperPrint, false);
                     }catch (JRException | ClassNotFoundException e){
-                        throw new RuntimeException(e);
+                        e.printStackTrace();
                     }
                 }
             } else {

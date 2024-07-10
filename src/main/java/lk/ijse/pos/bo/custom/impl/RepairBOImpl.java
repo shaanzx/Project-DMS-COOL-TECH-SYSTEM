@@ -22,8 +22,8 @@ public class RepairBOImpl implements RepairBO {
     PaymentDAO paymentDAO = (PaymentDAO) DAOFactory.getDaoFactory().getDaoType(DAOFactory.DAOType.PAYMENT);
 
     @Override
-    public int countRepairId() throws SQLException {
-        return 0;
+    public int countRepairId() throws SQLException, ClassNotFoundException {
+        return repairDAO.countRepairId();
     }
 
     @Override

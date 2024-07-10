@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface OrderBO extends SuperBO {
+    int countOrderId() throws SQLException, ClassNotFoundException;
+
     List<ViewOrdersDTO> getViewOrders() throws SQLException, ClassNotFoundException;
 
     List<ViewOrdersDTO> getViewOrdersByOrderId(String orderId) throws SQLException, ClassNotFoundException;

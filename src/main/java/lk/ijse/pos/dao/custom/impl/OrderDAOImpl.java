@@ -38,4 +38,15 @@ public class OrderDAOImpl implements OrderDAO {
     public Order search(String id) throws SQLException, ClassNotFoundException {
         return null;
     }
+
+    @Override
+    public int countOrderId() throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = SQLUtil.execute("SELECT COUNT(oId) from orders");
+
+        if(resultSet.next()){
+            int count = resultSet.getInt(1);
+            return count;
+        }
+        return Integer.parseInt(null);
+    }
 }

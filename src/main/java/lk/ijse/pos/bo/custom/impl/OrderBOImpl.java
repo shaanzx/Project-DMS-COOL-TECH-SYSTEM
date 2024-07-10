@@ -2,6 +2,7 @@ package lk.ijse.pos.bo.custom.impl;
 
 import lk.ijse.pos.bo.custom.OrderBO;
 import lk.ijse.pos.dao.DAOFactory;
+import lk.ijse.pos.dao.custom.OrderDAO;
 import lk.ijse.pos.dao.custom.QueryDAO;
 import lk.ijse.pos.dto.ViewOrdersDTO;
 import lk.ijse.pos.dto.ViewRepairDTO;
@@ -15,6 +16,11 @@ import java.util.List;
 public class OrderBOImpl implements OrderBO {
     QueryDAO queryDAO = (QueryDAO) DAOFactory.getDaoFactory().getDaoType(DAOFactory.DAOType.VIEW_ORDER);
     QueryDAO getQueryDAO = (QueryDAO) DAOFactory.getDaoFactory().getDaoType(DAOFactory.DAOType.VIEW_REPAIR);
+    OrderDAO orderDAO = (OrderDAO) DAOFactory.getDaoFactory().getDaoType(DAOFactory.DAOType.ORDER);
+    @Override
+    public int countOrderId() throws SQLException, ClassNotFoundException {
+        return orderDAO.countOrderId();
+    }
 
     @Override
     public List<ViewOrdersDTO> getViewOrders() throws SQLException, ClassNotFoundException {

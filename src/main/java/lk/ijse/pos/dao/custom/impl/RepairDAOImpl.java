@@ -10,8 +10,13 @@ import java.util.ArrayList;
 
 public class RepairDAOImpl implements RepairDAO {
     @Override
-    public int countRepairId() throws SQLException {
-        return 0;
+    public int countRepairId() throws SQLException, ClassNotFoundException {
+        ResultSet resultSet = SQLUtil.execute("SELECT COUNT(eId) from repair");
+        if (resultSet.next()) {
+            int idd = Integer.parseInt(resultSet.getString(1));
+            return idd;
+        }
+        return Integer.parseInt(null);
     }
 
     @Override

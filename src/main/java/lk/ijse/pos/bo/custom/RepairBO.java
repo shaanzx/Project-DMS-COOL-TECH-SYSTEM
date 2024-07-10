@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public interface RepairBO extends SuperBO {
 
-    int countRepairId() throws SQLException;
+    int countRepairId() throws SQLException, ClassNotFoundException;
 
     ResultSet generateRepairId() throws SQLException, ClassNotFoundException;
 

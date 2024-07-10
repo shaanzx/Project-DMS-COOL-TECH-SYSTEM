@@ -7,5 +7,5 @@ import java.sql.SQLException;
 
 public interface RepairDAO extends CrudDAO<Repair> {
 
-    int countRepairId() throws SQLException;
+    int countRepairId() throws SQLException, ClassNotFoundException;
 }

@@ -11,6 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import lk.ijse.pos.bo.BOFactory;
 import lk.ijse.pos.bo.custom.ItemBO;
+import lk.ijse.pos.bo.custom.OrderBO;
+import lk.ijse.pos.bo.custom.RepairBO;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -20,6 +22,8 @@ import java.util.ResourceBundle;
 
 public class DashboardFormController implements Initializable {
     ItemBO itemBO = (ItemBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.ITEM);
+    OrderBO orderBO = (OrderBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.ORDER);
+    RepairBO repairBO = (RepairBO) BOFactory.getBoFactory().getBOType(BOFactory.BOType.REPAIR);
 
     @FXML
     private BarChart<String, Integer> barChart;
@@ -86,11 +90,25 @@ public class DashboardFormController implements Initializable {
     }
 
     private void getRepairCount() {
-
+        try {
+            int i = repairBO.countRepairId();
+            lblRepairCount.setText(String.valueOf(i));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void countOrder() {
-
+        try {
+            int count = orderBO.countOrderId();
+            lblOrderCount.setText(String.valueOf( count));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
