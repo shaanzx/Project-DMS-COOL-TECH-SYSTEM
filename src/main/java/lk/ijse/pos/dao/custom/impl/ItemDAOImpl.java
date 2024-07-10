@@ -33,7 +33,7 @@ public class ItemDAOImpl  implements ItemDAO {
 
     @Override
     public ArrayList<PieChart.Data> getPieChartData() throws SQLException, ClassNotFoundException {
-        ResultSet resultSet = SQLUtil.execute("select iCode,SUM(qty)as orderCount from orderdetails group by iCode order by ordercount desc limit 5");
+        ResultSet resultSet = SQLUtil.execute("SELECT iCode,SUM(qty)as orderCount from orderdetails group by iCode order by ordercount desc limit 5");
         ArrayList<PieChart.Data> data = new ArrayList<>();
         while (resultSet.next()) {
             Item item = search(resultSet.getString(1));

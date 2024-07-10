@@ -1,5 +1,6 @@
 package lk.ijse.pos.controller;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,6 +15,7 @@ import lk.ijse.pos.bo.custom.ItemBO;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class DashboardFormController implements Initializable {
@@ -66,7 +68,21 @@ public class DashboardFormController implements Initializable {
     }
 
     private void setPieChart() {
+        try {
+            ObservableList<PieChart.Data> obList = FXCollections.observableArrayList();
+            ArrayList<PieChart.Data> data = itemBO.getPieChartData();
+            for (PieChart.Data datum : data) {
+                obList.add(datum);
+            }
+            pieChart.getData().addAll(obList);
+            pieChart.setTitle("Most Trending Products");
+            pieChart.setStartAngle(180);
 
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void getRepairCount() {

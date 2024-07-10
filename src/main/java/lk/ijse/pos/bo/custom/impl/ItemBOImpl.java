@@ -1,6 +1,7 @@
 package lk.ijse.pos.bo.custom.impl;
 
 import javafx.collections.ObservableList;
+import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import lk.ijse.pos.bo.custom.ItemBO;
 import lk.ijse.pos.dao.DAOFactory;
@@ -20,6 +21,11 @@ public class ItemBOImpl implements ItemBO {
     @Override
     public ObservableList<XYChart.Series<String, Integer>> getDataToBarChart() throws SQLException, ClassNotFoundException {
         return itemDAO.getDataToBarChart();
+    }
+
+    @Override
+    public ArrayList<PieChart.Data> getPieChartData() throws SQLException, ClassNotFoundException {
+        return itemDAO.getPieChartData();
     }
 
     @Override

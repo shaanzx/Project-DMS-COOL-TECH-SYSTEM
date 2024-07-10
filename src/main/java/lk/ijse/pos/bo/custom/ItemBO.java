@@ -1,6 +1,7 @@
 package lk.ijse.pos.bo.custom;
 
 import javafx.collections.ObservableList;
+import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import lk.ijse.pos.bo.SuperBO;
 import lk.ijse.pos.dto.ItemDTO;
@@ -12,6 +13,8 @@ import java.util.List;
 
 public interface ItemBO extends SuperBO {
     ObservableList<XYChart.Series<String, Integer>> getDataToBarChart() throws SQLException, ClassNotFoundException;
+
+    ArrayList<PieChart.Data> getPieChartData() throws SQLException, ClassNotFoundException;
 
     ResultSet generateIdItemCode() throws SQLException, ClassNotFoundException;
 
