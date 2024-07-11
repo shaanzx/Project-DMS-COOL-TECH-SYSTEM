@@ -37,10 +37,11 @@ public class Navigation {
         stage.setScene(new Scene(root1));
         stage.setResizable(false);
         stage.show();
+
     }
     public static void switchPaging(Pane pane, String path) throws IOException {
         pane.getChildren().clear();
-        FXMLLoader fxmlLoader = new FXMLLoader(Navigation.class.getResource("/lk.ijse.pos/view/" + path));
+        FXMLLoader fxmlLoader = new FXMLLoader(Navigation.class.getResource("/view/" + path));
         Parent root = fxmlLoader.load();
         pane.getChildren().add(root);
     }

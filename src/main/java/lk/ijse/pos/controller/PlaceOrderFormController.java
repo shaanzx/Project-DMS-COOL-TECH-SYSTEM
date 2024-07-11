@@ -128,6 +128,7 @@ public class PlaceOrderFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         lblOrderId.setText(generateNextOrderId());
+        lblOrderId.setDisable(true);
         setCellValueFactory();
         setDate();
         getCustomerId();
@@ -218,12 +219,9 @@ public class PlaceOrderFormController implements Initializable {
     }
 
     private File getBill() throws JRException, SQLException, ClassNotFoundException {
-        JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/lk.ijse.pos/reports/order.jrxml");
+        JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/reports/order.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
-
-        JasperPrint jasperPrint = null;
-
-            jasperPrint = JasperFillManager.fillReport(jasperReport, null, DBConnection.getDbConnection().getConnection());
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, DBConnection.getDbConnection().getConnection());
 
         // Export the report to a PDF file
         File pdfFile = new File("Order Receipt.pdf");
@@ -347,7 +345,7 @@ public class PlaceOrderFormController implements Initializable {
                     Map<String, Object> parameters = new HashMap<>();
                     parameters.put("param1",printcash);
                     parameters.put("param2",balance);
-                    InputStream resource = this.getClass().getResourceAsStream("lorder.jrxml");
+                    InputStream resource = this.getClass().getResourceAsStream("/reports/order.jrxml");
                     try {
                         Mail.setMail("Order Completed", "Order Completed", "Thank you for your order. Your order is successfully placed. Your order id is "+orderId+".", cusEmail, getBill());
                     } catch (MessagingException | IOException | JRException e) {

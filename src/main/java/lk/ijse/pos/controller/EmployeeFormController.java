@@ -84,6 +84,7 @@ public class EmployeeFormController  implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         txtEmpId.setText(generateNextEmployeeId());
+        txtEmpId.setDisable(true);
         setDate();
         setCellValueFactory();
         loadAllEmployee();

@@ -11,9 +11,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lk.ijse.pos.bo.BOFactory;
 import lk.ijse.pos.bo.custom.UserBO;
-import lk.ijse.pos.dao.custom.DashBoardDAO;
-import lk.ijse.pos.dto.UserDTO;
-import lk.ijse.pos.util.Navigation;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -94,7 +91,7 @@ public class NewLoginFormController {
 
     @FXML
     void btnSignUpOnAction(ActionEvent event) throws IOException {
-        Parent rootNode = FXMLLoader.load(this.getClass().getResource("/lk.ijse.pos/view/register_form.fxml"));
+        Parent rootNode = FXMLLoader.load(this.getClass().getResource("/view/register_form.fxml"));
 
         Scene scene = new Scene(rootNode);
         Stage stage = new Stage();
@@ -115,7 +112,7 @@ public class NewLoginFormController {
     }
 
     public void gotoDashBoard() throws IOException {
-        Parent rootNode = FXMLLoader.load(this.getClass().getResource("/lk.ijse.pos/view/global_new_form.fxml"));
+        Parent rootNode = FXMLLoader.load(this.getClass().getResource("/view/global_new_form.fxml"));
         Scene scene = new Scene(rootNode);
         Stage stage = new Stage();
         stage.setScene(scene);

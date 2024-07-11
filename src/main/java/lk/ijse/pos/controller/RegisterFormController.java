@@ -11,6 +11,7 @@ import javafx.scene.layout.AnchorPane;
 import lk.ijse.pos.bo.BOFactory;
 import lk.ijse.pos.bo.custom.UserBO;
 import lk.ijse.pos.dto.UserDTO;
+import lk.ijse.pos.util.DataValidateController;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -41,6 +42,7 @@ public class RegisterFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         txtUserId.setText(generateUserId());
+        txtUserId.setDisable(true);
     }
 
     @FXML
@@ -49,17 +51,27 @@ public class RegisterFormController implements Initializable {
         String userName = txtUserName.getText();
         String password = txtPassword.getText();
 
-        try {
-            boolean isSaved = userBO.saveUser(new UserDTO(userId, userName, password));
-            if(isSaved){
-                new Alert(Alert.AlertType.CONFIRMATION, "Successfully Saved!").show();
-                txtUserId.clear();
-                txtUserName.clear();
-                txtPassword.clear();
-                txtUserName.requestFocus();
+        if(DataValidateController.validateUserName(txtUserName.getText())) {
+            userNameValidate.setText("");
+            if (DataValidateController.validateUserPassword(txtPassword.getText())) {
+                passwordValidate.setText("");
+                try {
+                    boolean isSaved = userBO.saveUser(new UserDTO(userId, userName, password));
+                    if(isSaved){
+                        new Alert(Alert.AlertType.CONFIRMATION, "Successfully Saved!").show();
+                        txtUserId.clear();
+                        txtUserName.clear();
+                        txtPassword.clear();
+                        txtUserName.requestFocus();
+                    }
+                } catch (SQLException | ClassNotFoundException e) {
+                    new Alert(Alert.AlertType.ERROR, "Already exists").show();
+                }
+            } else {
+                passwordValidate.setText("Input any character and try again!");
             }
-        } catch (SQLException | ClassNotFoundException e) {
-            new Alert(Alert.AlertType.ERROR, "Already exists").show();
+        }else{
+            userNameValidate.setText("Invalid user name and try again!");
         }
     }
 

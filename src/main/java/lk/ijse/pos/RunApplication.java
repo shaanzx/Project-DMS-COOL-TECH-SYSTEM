@@ -9,7 +9,7 @@ public class RunApplication extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setScene(new Scene(FXMLLoader.load(this.getClass().getResource("/lk.ijse.pos/view/new_login_form.fxml"))));
+        stage.setScene(new Scene(FXMLLoader.load(this.getClass().getResource("/view/new_login_form.fxml"))));
         stage.setTitle("Login");
         stage.centerOnScreen();
         stage.show();

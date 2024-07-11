@@ -87,6 +87,7 @@ public class ItemFormController implements Initializable {
         setDate();
         setCellValueFactory();
         txtItemCode.setText(generateNextItemCode());
+        txtItemCode.setDisable(true);
         loadAllItem();
     }
 

@@ -143,6 +143,8 @@ public class RepairFormController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         lblRepairId.setText(generateNextRepairId());
         lblOrderId.setText(generateNextOrderId());
+        lblRepairId.setDisable(true);
+        lblOrderId.setDisable(true);
         getVehicleNo();
         getEmployeeId();
         getItemCode();
