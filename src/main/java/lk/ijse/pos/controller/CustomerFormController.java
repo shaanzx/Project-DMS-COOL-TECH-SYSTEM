@@ -14,6 +14,7 @@ import lk.ijse.pos.bo.BOFactory;
 import lk.ijse.pos.bo.custom.CustomerBO;
 import lk.ijse.pos.dto.CustomerDTO;
 import lk.ijse.pos.tm.CustomerTm;
+import lk.ijse.pos.util.DataValidateController;
 import lk.ijse.pos.util.Navigation;
 
 import java.io.IOException;
@@ -203,17 +204,38 @@ public class CustomerFormController implements Initializable {
         String cusTel = txtCusTel.getText();
         String cusEmail = txtCusEmail.getText();
         String userId = NewLoginFormController.getInstance().userId;
-        try {
-            boolean isSaved = customerBO.saveCustomer(new CustomerDTO(cusId, cusName, cusAddress, cusTel, cusEmail, userId));
-            if(isSaved){
-                new Alert(Alert.AlertType.CONFIRMATION, "Customer is Saved").show();
-                tblCustomer.getItems().add(new CustomerTm(cusId,cusName,cusAddress,cusTel,cusEmail));
-                tblCustomer.refresh();
-                clearTextFields();
-                generateNewCustomerId();
+
+        if(DataValidateController.validateCustomerName(txtCusName.getText())) {
+            customerNameValidate.setText("");
+            if (DataValidateController.validateCustomerAddress(txtCusAddress.getText())) {
+                customerAddressValidate.setText("");
+                if (DataValidateController.validateCustomerTel(txtCusTel.getText())) {
+                    customerTelValidate.setText("");
+                    if (DataValidateController.validateCustomerEmail(txtCusEmail.getText())) {
+                        customerEmailValidate.setText("");
+                        try {
+                            boolean isSaved = customerBO.saveCustomer(new CustomerDTO(cusId, cusName, cusAddress, cusTel, cusEmail, userId));
+                            if(isSaved){
+                                new Alert(Alert.AlertType.CONFIRMATION, "Customer is Saved").show();
+                                tblCustomer.getItems().add(new CustomerTm(cusId,cusName,cusAddress,cusTel,cusEmail));
+                                tblCustomer.refresh();
+                                clearTextFields();
+                                generateNewCustomerId();
+                            }
+                        } catch (SQLException | ClassNotFoundException e) {
+                            new Alert(Alert.AlertType.ERROR, "Failed to save the customer " + e.getMessage()).show();
+                        }
+                    } else {
+                        customerEmailValidate.setText("Invalid Email");
+                    }
+                } else {
+                    customerTelValidate.setText("Invalid Telephone Number");
+                }
+            } else {
+                customerAddressValidate.setText("Invalid Address");
             }
-        } catch (SQLException | ClassNotFoundException e) {
-            new Alert(Alert.AlertType.ERROR, "Failed to save the customer " + e.getMessage()).show();
+        }else{
+            customerNameValidate.setText("Invalid Name");
         }
     }
 
