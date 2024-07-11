@@ -19,7 +19,7 @@
                   <Font name="Cambria" size="30.0" />
                </font>
             </Text>
-            <Label fx:id="lblOrderCount" layoutX="112.0" layoutY="45.0" text="Label" textFill="#1e26bf">
+            <Label fx:id="lblOrderCount" layoutX="112.0" layoutY="45.0" text="Label" textAlignment="CENTER" textFill="#1e26bf">
                <font>
                   <Font name="Cambria Bold" size="36.0" />
                </font>

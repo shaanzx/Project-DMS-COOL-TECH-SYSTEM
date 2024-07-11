@@ -11,6 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lk.ijse.pos.bo.BOFactory;
 import lk.ijse.pos.bo.custom.UserBO;
+import lk.ijse.pos.util.DataValidateController;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -66,26 +67,31 @@ public class NewLoginFormController {
         String userName = txtUserId.getText();
         String password = txtPassword.getText();
 
-        try {
-            ResultSet resultSet = userBO.checkUserNamePassword(userName,password);
-            while(resultSet.next()){
-                String uId = resultSet.getString(1);
-                String uName = resultSet.getString(2);
-                String uPassword = resultSet.getString(3);
+        if(DataValidateController.validateUserName(userName)) {
+            userIdValidate.setText("");
+            try {
+                ResultSet resultSet = userBO.checkUserNamePassword(userName,password);
+                while(resultSet.next()){
+                    String uId = resultSet.getString(1);
+                    String uName = resultSet.getString(2);
+                    String uPassword = resultSet.getString(3);
 
-                if (password.equals(uPassword)) {
-                    ancLogin.getScene().getWindow().hide();
-                    gotoDashBoard();
-                }else{
-                    new Alert(Alert.AlertType.ERROR,"Incorrect Password!");
+                    if (password.equals(uPassword)) {
+                        ancLogin.getScene().getWindow().hide();
+                        gotoDashBoard();
+                    }else{
+                        new Alert(Alert.AlertType.ERROR,"Incorrect Password!").show();
+                    }
                 }
+            } catch (  SQLException  e ) {
+                new Alert(Alert.AlertType.ERROR, "User id or password doesn't match.Try aging!").show();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
-        } catch (  SQLException  e ) {
-            new Alert(Alert.AlertType.ERROR, "User id or password doesn't match.Try aging!").show();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        }else{
+            userIdValidate.setText("Invalid User Id");
         }
     }
 

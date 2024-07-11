@@ -453,7 +453,7 @@ public class RepairFormController implements Initializable {
                 Optional<ButtonType> type = new Alert(Alert.AlertType.CONFIRMATION, "Repair Process Done.Do You want To Bill?", yes, no).showAndWait();
                 if(type.orElse(no) == yes) {
                     try {
-                        JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/lk.ijse.pos/reports/Payment.jrxml");
+                        JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/reports/Payment.jrxml");
                         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
 
                         Map<String, Object> data = new HashMap<>();
