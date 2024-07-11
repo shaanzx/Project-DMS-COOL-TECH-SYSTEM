@@ -13,6 +13,7 @@ import lk.ijse.pos.bo.BOFactory;
 import lk.ijse.pos.bo.custom.ItemBO;
 import lk.ijse.pos.dto.ItemDTO;
 import lk.ijse.pos.tm.ItemTm;
+import lk.ijse.pos.util.DataValidateController;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -176,16 +177,36 @@ public class ItemFormController implements Initializable {
         double unitPrice = Double.parseDouble(txtUnitPrice.getText());
         String date = dpDate.getValue().toString();
 
-        try {
-            boolean isSaved = itemBO.saveItem(new ItemDTO(itemCode, description, vehicleModel, qytOnHand, unitPrice, date));
-            if(isSaved){
-                new Alert(Alert.AlertType.CONFIRMATION, "Item Saved").show();
-                loadAllItem();
-                clearTextFields();
-                generateNextItemCode();
+        if(DataValidateController.validateItemName(txtItemName.getText())) {
+            itemNameValidate.setText("");
+            if (DataValidateController.validateVehicleModel(txtVehicleModel.getText())) {
+                itemVehicleModelValidate.setText("");
+                if (DataValidateController.validateItemQty(txtQytOnHand.getText())) {
+                    itemQtyValidate.setText("");
+                    if (DataValidateController.validateItemPrice(txtUnitPrice.getText())) {
+                        itemUnitPriceValidate.setText("");
+                            try {
+                                boolean isSaved = itemBO.saveItem(new ItemDTO(itemCode, description, vehicleModel, qytOnHand, unitPrice, date));
+                                if(isSaved){
+                                    new Alert(Alert.AlertType.CONFIRMATION, "Item Saved").show();
+                                    loadAllItem();
+                                    clearTextFields();
+                                    generateNextItemCode();
+                                }
+                            } catch (SQLException | ClassNotFoundException e) {
+                                throw new RuntimeException(e);
+                            }
+                    } else {
+                        itemUnitPriceValidate.setText("Invalid Price");
+                    }
+                } else {
+                    itemQtyValidate.setText("Invalid Quantity");
+                }
+            } else {
+                itemVehicleModelValidate.setText("Invalid Vehicle Model");
             }
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        }else{
+            itemNameValidate.setText("Invalid Name");
         }
     }
 
