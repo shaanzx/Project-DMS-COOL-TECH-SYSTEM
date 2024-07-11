@@ -14,6 +14,7 @@ import lk.ijse.pos.bo.BOFactory;
 import lk.ijse.pos.bo.custom.EmployeeBO;
 import lk.ijse.pos.dto.EmployeeDTO;
 import lk.ijse.pos.tm.EmployeeTm;
+import lk.ijse.pos.util.DataValidateController;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -187,16 +188,36 @@ public class EmployeeFormController  implements Initializable {
         String jobRole = txtEmpJobRole.getText();
         String userId = NewLoginFormController.getInstance().userId;
 
-        try {
-            boolean isSaved = employeeBO.saveEmployee(new EmployeeDTO(empId, empName, empAddress, tel, jobRole, userId));
-            if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Saved").show();
-                loadAllEmployee();
-                cleartextField();
-                generateNextEmployeeId();
+        if(DataValidateController.validateEmployeeName(txtEmpName.getText())) {
+            employeeNameValidate.setText("");
+            if (DataValidateController.validateEmployeeAddress(txtEmpAddress.getText())) {
+                employeeAddressValidate.setText("");
+                if (DataValidateController.validateEmployeeTel(txtEmpTel.getText())) {
+                    employeeTelValidate.setText("");
+                    if (DataValidateController.validateEmployeeJobRole(txtEmpJobRole.getText())) {
+                        employeeJobRoleValidate.setText("");
+                            try {
+                                boolean isSaved = employeeBO.saveEmployee(new EmployeeDTO(empId, empName, empAddress, tel, jobRole, userId));
+                                if (isSaved) {
+                                    new Alert(Alert.AlertType.CONFIRMATION, "Saved").show();
+                                    loadAllEmployee();
+                                    cleartextField();
+                                    generateNextEmployeeId();
+                                }
+                            } catch (SQLException | ClassNotFoundException e) {
+                                throw new RuntimeException(e);
+                            }
+                    } else {
+                        employeeJobRoleValidate.setText("Invalid Job Role");
+                    }
+                } else {
+                    employeeTelValidate.setText("Invalid Telephone Number");
+                }
+            } else {
+                employeeAddressValidate.setText("Invalid Address");
             }
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        }else{
+            employeeNameValidate.setText("Invalid Name");
         }
     }
 
